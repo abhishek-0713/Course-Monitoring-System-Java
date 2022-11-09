@@ -12,13 +12,12 @@
 In an educational  Institute there are several courses running parallel  every day. For every course there are several batches at same/different time. Every course has a session wise/day wise schedule. It will be difficult for the Faculty Head to know the status of every batch i.e what is the session taught at each day in a batch.
 So the Automated Course Monitoring System will keep the records of all the courses,batches,faculties and the daywise update for every batch. It will also help the Faculty Head to maintain the course plan .
  
- <!-- ![image](https://user-images.githubusercontent.com/105943862/200751675-ce7d2c83-e8e3-4fd8-87c8-da9186ede61d.png)
-![image](https://user-images.githubusercontent.com/105943862/200752078-ee1bf8c5-5ee7-4082-8611-ae862bfd206b.png)
-![image](https://user-images.githubusercontent.com/105943862/200753634-39bc8664-161e-4bac-9da1-b10f8fecf2b5.png) -->
-
-<img src="https://user-images.githubusercontent.com/105943862/200754059-2452beb7-2471-411d-9caa-10f900dcb10b.png" alt="Coder" align = right > 
-
 ### Application Topics :
 - Core Java
 - SQL 
 - JDBC
+ <!-- ![image](https://user-images.githubusercontent.com/105943862/200751675-ce7d2c83-e8e3-4fd8-87c8-da9186ede61d.png)
+![image](https://user-images.githubusercontent.com/105943862/200752078-ee1bf8c5-5ee7-4082-8611-ae862bfd206b.png)
+![image](https://user-images.githubusercontent.com/105943862/200753634-39bc8664-161e-4bac-9da1-b10f8fecf2b5.png) -->
+
+<img src="https://user-images.githubusercontent.com/105943862/200754059-2452beb7-2471-411d-9caa-10f900dcb10b.png" alt="Coder" > 
