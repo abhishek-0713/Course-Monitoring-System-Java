@@ -2,18 +2,32 @@ package com.learninghub.model;
 
 public class generateReport {
 
-	private String FName;
-	private String batchId;
+	private int batchId;
 	private String batchstartDate;
 	private int courseId; 
 	private String duration;
 	private int noOfStudents;
+	private String FName;
 	private int completed;
 	
 	
 	public generateReport() {
 		super();
 	}
+	
+
+	public generateReport(int batchId, String batchstartDate, int courseId, String duration, int noOfStudents,
+			String fName, int completed) {
+		super();
+		this.batchId = batchId;
+		this.batchstartDate = batchstartDate;
+		this.courseId = courseId;
+		this.duration = duration;
+		this.noOfStudents = noOfStudents;
+		this.FName = fName;
+		this.completed = completed;
+	}
+
 
 
 	public String getFName() {
@@ -26,12 +40,12 @@ public class generateReport {
 	}
 
 
-	public String getBatchId() {
+	public int getBatchId() {
 		return batchId;
 	}
 
 
-	public void setBatchId(String batchId) {
+	public void setBatchId(int batchId) {
 		this.batchId = batchId;
 	}
 
