@@ -83,6 +83,18 @@ public class BatchDaoImpl implements BatchDao {
 	///// ****************        UPDATE BATCH          ************* /////
 	@Override
 	public String updateBatch (String str, String set, String batchId) throws BatchException {
+		
+		String result = "Batch Data Need To Be Updated.";
+		
+		Connection conn = DBUtil.provideConnection();
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement("UPDATE Batch SET ");
+		} 
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return batchId;
 		
 	}
