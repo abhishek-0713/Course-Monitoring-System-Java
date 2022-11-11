@@ -18,7 +18,7 @@ public class DBUtil {
 		
 		url = rb.getString("database.url");
 		driverName = rb.getString("database.driverName");
-		username = rb.getString("databse.username");
+		username = rb.getString("database.username");
 		password = rb.getString("database.password");
 		
 	}

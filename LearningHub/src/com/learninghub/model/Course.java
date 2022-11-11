@@ -5,7 +5,7 @@ public class Course {
 	private int courseId;
 	private String courseName;
 	private int courseFee;
-	private int courseDescription;
+	private String courseDescription;
 	
 
 	public Course() {
@@ -13,7 +13,7 @@ public class Course {
 	}
 
 
-	public Course(int courseId, String courseName, int courseFee, int courseDescription) {
+	public Course(int courseId, String courseName, int courseFee, String courseDescription) {
 		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
@@ -52,12 +52,12 @@ public class Course {
 	}
 
 
-	public int getCourseDescription() {
+	public String getCourseDescription() {
 		return courseDescription;
 	}
 
 
-	public void setCourseDescription(int courseDescription) {
+	public void setCourseDescription(String courseDescription) {
 		this.courseDescription = courseDescription;
 	}
 
