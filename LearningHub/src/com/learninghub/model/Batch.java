@@ -27,6 +27,16 @@ public class Batch {
 	}
 
 
+	public Batch(int courseId, int numberOfStudents, String batchStartDate, String duration) {
+		// TODO Auto-generated constructor stub
+		super();
+		this.courseId = courseId;
+		this.numberOfStudents = numberOfStudents;
+		this.batchStartDate = batchStartDate;
+		this.duration = duration;
+	}
+
+
 	public int getBatchId() {
 		return batchId;
 	}
