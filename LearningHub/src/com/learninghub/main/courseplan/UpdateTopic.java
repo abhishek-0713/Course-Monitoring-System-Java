@@ -10,10 +10,11 @@ import java.util.Scanner;
 import com.learninghub.dao.CoursePlanDao;
 import com.learninghub.dao.CoursePlanDaoImpl;
 import com.learninghub.exceptions.CoursePlanException;
+import com.learninghub.extrafeatures.Style;
 import com.learninghub.utility.DBUtil;
 
 public class UpdateTopic {
-
+	
 	public static void updateTopic(int facultyId) {
 		
 
@@ -27,44 +28,50 @@ public class UpdateTopic {
 			ps.setInt(1, facultyId);
 			
 			ResultSet rs = ps.executeQuery();
-			List<Integer> arr = new ArrayList<>();
+			List<String> arr = new ArrayList<>();
 			while(rs.next()) {
-				arr.add(rs.getInt("batchId"));
+				arr.add(rs.getString("batchId"));
 			}
 			
 			if(arr.size()==0) {
-				System.out.println(facultyId + " is not Allocated to Any Batch");
+				System.out.println(Style.YELLOW+facultyId + "is not Allocated to Any Batch"+Style.RESET);
 				return;
 			}
 			
-			System.out.println("Choose Batch Id :");
+			System.out.println(Style.CYAN+"Choose Batch Id :"+Style.RESET);
 			for(int i = 0; i < arr.size(); i++) {
 				System.out.println((i+1)+". " +arr.get(i));
 			}
 			
 			int ch = sc.nextInt();
-			int batchId = arr.get(ch-1);
+			String batchId = arr.get(ch-1);
 			
-			System.out.print("Enter the day no : ");
+			System.out.println(Style.CYAN+"Enter the day no : "+Style.RESET);
 			int dayNo = sc.nextInt();
 			
 			sc.nextLine();
-			System.out.print("Enter Topic : ");
+			System.out.println(Style.CYAN+"Enter Topic"+Style.RESET);
 			String topic = sc.nextLine();
 			
 			CoursePlanDao dao = new CoursePlanDaoImpl();
 			
 			try {
 				String res = dao.updateTopic(batchId, dayNo, topic);
+				System.out.println();
 				System.out.println(res);
+				System.out.println();
 				
 			} catch (CoursePlanException e) {
-				System.out.println(e.getMessage());
+				System.out.println();
+				System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
+				System.out.println();
 				
 			}
 			
 		}catch (Exception e) {
-			System.out.println("Please Enter Right Input");
+			System.out.println();
+			System.out.println(Style.RED+"Please Enter Right Input"+Style.RESET);
+			System.out.println();
 			updateTopic(facultyId);
 		}
 		

@@ -1,6 +1,7 @@
 package com.learninghub.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,386 +9,407 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import com.learninghub.exceptions.CoursePlanException;
-import com.learninghub.model.coursePlan;
+import com.learninghub.extrafeatures.Style;
+import com.learninghub.model.CoursePlan;
 import com.learninghub.utility.DBUtil;
 
-public class CoursePlanDaoImpl implements CoursePlanDao {
-
-	///// ****************        CREATE COURSE PLAN         ************* /////
-
+public class CoursePlanDaoImpl implements CoursePlanDao{
+	
+	
+	// Add New Course Plan into Database
 	@Override
-	public String createCoursePlan(int batchId, int dayNumber) throws CoursePlanException {
-		// TODO Auto-generated method stub
-
-		String result = "No CoursePlan Record Inserted.";
+	public String addCoursePlan(String batchId, int dayNo) throws CoursePlanException {
 		
-		try(Connection conn = DBUtil.provideConnection()) {
+		String message = Style.RED+"Data Not Inserted..."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps =  conn.prepareStatement("SELECT batchStartDate FROM Batch WHERE batchId = ?");
+			PreparedStatement ps1 = conn .prepareStatement("select batchstartDate from batch where batchId = ?");
 			
-			ps.setInt(1, batchId);
+			ps1.setString(1, batchId);
+			ResultSet rs = ps1.executeQuery();
 			
-			ResultSet rs = ps.executeQuery();
-			
-			String update = "";
+			String dt = "";
 			
 			if(rs.next()) {
-				Date date = rs.getDate("batchStartDate");
-				update =  date.toString();
-				
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = rs.getDate("batchstartDate");
+				dt = date.toString();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 				Calendar c = Calendar.getInstance();
-				
+
 				try {
-					c.setTime(df.parse(update));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					System.out.println(e.getMessage());
+					c.setTime(sdf.parse(dt));
+					
+				} catch (ParseException e) {				
+					System.out.println((Style.RED_BACKGROUND+e.getMessage()+Style.RESET));
+					
 				}
-				
-				c.add(Calendar.DATE, dayNumber-1);
-				
-				update = df.format(c.getTime());
-			}
-			
+				c.add(Calendar.DATE, dayNo-1);  // number of days to add
 
-			PreparedStatement ps2 =  conn.prepareStatement("INSERT INTO CoursePlan(batchId, dayNumber, date) VALUES(?,?,?)");
-			
-			ps2.setInt(1, batchId);
-			ps2.setInt(2, dayNumber);
-			ps2.setString(3, update);
-			
-			
-			int x = ps2.executeUpdate();
-			
-			if(x > 0) {
-				result = "New CoursePlan Created Successfully.";
+				dt = sdf.format(c.getTime());  // dt is now the new date
 			}
 			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CoursePlanException(e.getMessage());
+			PreparedStatement ps = conn .prepareStatement("insert into courseplan(batchId, daynumber, planDate) values(?, ?, ?)");
+			
+			ps.setString(1, batchId);
+			ps.setInt(2, dayNo);
+			ps.setString(3, dt);
+			
+			int x = ps.executeUpdate();
+			
+			if(x>0) {		
+				message = Style.GREEN+"New Course Plan Added Successfully.."+Style.RESET;	
+			}
+		}catch(SQLException e) {
+			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
 		}
 		
-		return result;
+		return message;
+	}
+	
+	
+	// Update Status of Course table for Faculty Only
+	@Override
+	public String updateStatus(String batchId, int dayNo) throws CoursePlanException {
 		
-
+		String message = Style.RED+"Status Not Updated..."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
+			PreparedStatement ps1 = conn .prepareStatement("select datediff(planDate,curdate()) as date from courseplan where batchId = ? AND daynumber = ?");
+			
+			ps1.setString(1, batchId);
+			ps1.setInt(2, dayNo);
+			
+			ResultSet rs = ps1.executeQuery();
+			
+			int diff =-1;
+			if(rs.next()) {
+				diff = rs.getInt(1);
+			}
+			
+			if(diff<=0) {
+				PreparedStatement ps = conn .prepareStatement("update courseplan set status = true where batchId = ? AND daynumber = ?");
+				
+				ps.setString(1, batchId);
+				ps.setInt(2, dayNo);
+				
+				int x = ps.executeUpdate();
+				
+				if(x>0) {		
+					message = Style.GREEN+"Status Updated Successfully.."+Style.RESET;	
+				}else {
+					throw new CoursePlanException(Style.RED+"Day no "+dayNo+" is not Planned yet.."+Style.RESET);
+				}
+			}else {
+				throw new CoursePlanException(Style.RED+"You Can't Change Status For a Future Date"+Style.RESET);
+			}
+			
+		}catch(Exception e) {
+			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+		}
+		
+		return message;
+	}
+	
+	
+	// Update topic of Course table for Faculty Only
+	@Override
+	public String updateTopic(String batchId, int dayNo, String topic) throws CoursePlanException {
+			
+		String message = Style.RED+"Status Not Updated..."+Style.RESET;
+			
+		try(Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn .prepareStatement("update courseplan set topic = ? where batchId = ? AND daynumber = ?");
+				
+			ps.setString(1, topic);
+			ps.setString(2, batchId);
+			ps.setInt(3, dayNo);
+				
+			int x = ps.executeUpdate();
+				
+			if(x>0) {		
+				message = Style.GREEN+"Status Updated Successfully.."+Style.RESET;	
+				
+			}else {
+				throw new CoursePlanException(Style.RED+"Day no "+dayNo+" is not Planned yet.."+Style.RESET);
+				
+			}
+			
+		}catch(SQLException e) {
+			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
+		}
+			
+		return message;
+	}
+	
+	
+	// Delete Day plan from Course table
+	@Override
+	public String deleteStatus(String batchId, int dayNo) throws CoursePlanException {
+		
+		String message = Style.RED+"Plan Not Deleted..."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn .prepareStatement("delete from courseplan where batchId = ? AND daynumber = ?");
+			
+			ps.setString(1, batchId);
+			ps.setInt(2, dayNo);
+			
+			int x = ps.executeUpdate();
+			
+			if(x>0) {		
+				message = Style.GREEN+"Course Plan Deleted Successfully.."+Style.RESET;	
+				
+			}else {
+				throw new CoursePlanException(Style.RED+"Day no "+dayNo+" is not Planned yet.."+Style.RESET);
+				
+			}
+			
+		}catch(SQLException e) {
+			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+		}
+		
+		return message;
+		
 	}
 
 	
-	///// ****************        VIEW COURSE PLAN        ************* /////
-
+	// View All Plans Date Wise
 	@Override
-	public List<coursePlan> viewCoursePlan() throws CoursePlanException {
-		// TODO Auto-generated method stub
-
-		List<coursePlan> coursePlanList = new ArrayList<>();
+	public List<CoursePlan> viewAllCoursePlanDateWise() throws CoursePlanException {
 		
-		try(Connection conn = DBUtil.provideConnection()) {
+		List<CoursePlan> coursePlans = new ArrayList<>();
+		
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps =  conn.prepareStatement("SELECT * FROM coursePlan ORDER BY date ASC");
+			PreparedStatement ps = conn .prepareStatement("SELECT * FROM courseplan ORDER BY planDate");
 			
 			ResultSet rs = ps.executeQuery();
 			
-			while(rs.next()) {
+			while(rs.next()) {		
 				
-				int planId = rs.getInt("planId");
-				int batchId = rs.getInt("batchId");
-				int dayNumber = rs.getInt("dayNumber");
+				int pid = rs.getInt("planId");
+				String bid = rs.getString("batchId");
+				int dNo = rs.getInt("daynumber");
 				String topic = rs.getString("topic");
-				Date date = rs.getDate("date");
-				boolean status = rs.getBoolean("status");
+				Date date = rs.getDate("planDate");
+				boolean staus = rs.getBoolean("status");
 				
-				String ud = date.toString();
-
-				coursePlan cp = new coursePlan(planId, batchId, dayNumber, topic, ud, status);
+				String dt = date.toString();
 				
-				coursePlanList.add(cp);
-			}
-	
-			
-			if(coursePlanList.size() == 0) {
-				throw new CoursePlanException("No CoursesPlan Created Yet.");
+				CoursePlan course = new CoursePlan(pid, bid, dNo, topic, dt, staus);
+				
+				coursePlans.add(course);
+				
 			}
 			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CoursePlanException(e.getMessage());
+			if(coursePlans.size() == 0)
+				throw new CoursePlanException(Style.RED_BACKGROUND+"No Plan is Created till Now.."+Style.RESET);
+			
+		}catch(SQLException e) {
+			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
 		}
 		
-		return coursePlanList;
-		
+		return coursePlans;
 	}
-
 	
-	///// ****************        VIEW COURSE DAY PLAN         ************* /////
-
+	
+	// View Plans As Per Faculty
 	@Override
-	public List<coursePlan> viewCoursePlanperDay(String date) throws CoursePlanException {
-		// TODO Auto-generated method stub
-
-		List<coursePlan> coursePlanList = new ArrayList<>();
+	public List<CoursePlan> viewFacultyCoursePlan(int facultyId) throws CoursePlanException{
 		
-		try(Connection conn = DBUtil.provideConnection()) {
-			
-			PreparedStatement ps =  conn.prepareStatement("SELECT * FROM coursePlan WHERE date = ? ORDER BY date ASC");
-			
-			ps.setString(1, date);
-			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				
-				int planId = rs.getInt("planId");
-				int batchId = rs.getInt("batchId");
-				int dayNumber = rs.getInt("dayNumber");
-				String topic = rs.getString("topic");
-				Date pdate = rs.getDate("date");
-				boolean status = rs.getBoolean("status");
-				
-				String ud = pdate.toString();
-
-				coursePlan cp = new coursePlan(planId, batchId, dayNumber, topic, ud, status);
-				
-				coursePlanList.add(cp);
-			}
-	
-			
-			if(coursePlanList.size() == 0) {
-				throw new CoursePlanException("No CoursesPlan Created Yet.");
-			}
-			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CoursePlanException(e.getMessage());
-		}
+		List<CoursePlan> coursePlans = new ArrayList<>();
 		
-		return coursePlanList;
-		
-	}
-
-	
-	///// ****************        VIEW FACULTY COURSE PLAN         ************* /////
-
-	@Override
-	public List<coursePlan> viewFacultyCP(int facultyId) throws CoursePlanException {
-		// TODO Auto-generated method stub
-
-		List<coursePlan> coursePlanList = new ArrayList<>();
-		
-		try(Connection conn = DBUtil.provideConnection()) {
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps =  conn.prepareStatement("SELECT A.* FROM coursePlan A, Batch B WHERE A.batchId = B.batchId AND B.facultyId = ? ORDER BY date ASC");
+			PreparedStatement ps = conn.prepareStatement("Select c.* from Courseplan c, Batch b where c.batchId = b.batchId and b.facultyId = ? ORDER BY planDate");
 			
 			ps.setInt(1, facultyId);
 			ResultSet rs = ps.executeQuery();
 			
-			while(rs.next()) {
+			while(rs.next()) {		
 				
-				int planId = rs.getInt("planId");
-				int batchId = rs.getInt("batchId");
-				int dayNumber = rs.getInt("dayNumber");
+				int pid = rs.getInt("planId");
+				String bid = rs.getString("batchId");
+				int dNo = rs.getInt("daynumber");
 				String topic = rs.getString("topic");
-				Date date = rs.getDate("date");
-				String ud = date.toString();
-				boolean status = rs.getBoolean("status");
+				Date date = rs.getDate("planDate");
+				boolean staus = rs.getBoolean("status");
 				
-				coursePlan cp = new coursePlan(planId, batchId, dayNumber, topic, ud, status);
+				String dt = date.toString();
 				
-				coursePlanList.add(cp);
-			}
-	
-			
-			if(coursePlanList.size() == 0) {
-				throw new CoursePlanException("No CoursesPlan Created Yet.");
+				CoursePlan course = new CoursePlan(pid, bid, dNo, topic, dt, staus);
+				
+				coursePlans.add(course);
+				
 			}
 			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CoursePlanException(e.getMessage());
+			if(coursePlans.size() == 0)
+				throw new CoursePlanException(Style.RED_BACKGROUND+"No Such Plan.."+Style.RESET);
+			
+		}catch(SQLException e) {
+			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
 		}
 		
-		return coursePlanList;
+		return coursePlans;
 		
 	}
 
 	
-	///// ****************        UPDATE COURSE PLAN STATUS         ************* /////
-
+	// Update Date of Course table
 	@Override
-	public String updateStatus(int batchId, int dayNumber) throws CoursePlanException {
-		// TODO Auto-generated method stub
-
-		String result = "CoursePlan Status Need to be Updated.";
+	public String updateDate(String batchId, int dayNo, int newDay) throws CoursePlanException {
 		
-		try(Connection conn = DBUtil.provideConnection()) {
+		
+		String message = Style.RED+"Status Not Updated..."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
+				
+			PreparedStatement ps1 = conn .prepareStatement("select batchstartDate from batch where batchId = ?");
 			
-			PreparedStatement ps =  conn.prepareStatement("SELECT DATEDIFF(date, curdate()) as date FROM coursePlan WHERE batchId = ? AND dayNumber = ?");
+			ps1.setString(1, batchId);
+			ResultSet rs = ps1.executeQuery();
 			
-			ps.setInt(1, batchId);
-			ps.setInt(2, dayNumber);
-			
-			ResultSet rs = ps.executeQuery();
-			
-			int difference = -1;
+			String dt = "";
 			
 			if(rs.next()) {
-				difference = rs.getInt(1);
-			}
-			if(difference <= 0) {
-		
-			PreparedStatement ps2 =  conn.prepareStatement("INSERT INTO CoursePlan(batchId, dayNumber, date) VALUES(?,?,?)");
-			
-			ps2.setInt(1, batchId);
-			ps2.setInt(2, dayNumber);
-		
-			
-			int x = ps2.executeUpdate();
-			
-			if(x > 0) {
-				result = "New CoursePlan Created Successfully.";
-			}
-			}
-			else {
-				throw new CoursePlanException("You can not change Date");
-			}
-		
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CoursePlanException(e.getMessage());
-		}
-		
-		return result;
-		
-	}
+				Date date = rs.getDate("batchstartDate");
+				dt = date.toString();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-	
-	///// ****************        UPDATE COURSE TOPIC       ************* /////
-
-	@Override
-	public String updateTopic(int batchId, int dayNumber, String topic) throws CoursePlanException {
-		// TODO Auto-generated method stub
-
-		String result = "CoursePlan Topic Need to be Updated.";
-		
-		try(Connection conn = DBUtil.provideConnection()) {
-			
-			PreparedStatement ps =  conn.prepareStatement("UPDATE coursePlan SET Topic = ? WHERE batchId = ? AND dayNumber = ?");
-			
-			ps.setString(1, topic);
-			ps.setInt(2, batchId);
-			ps.setInt(3, dayNumber);
-			
-			
-			int x = ps.executeUpdate();
-			
-			if(x > 0) {
-				result = "CoursePlan Topic Updated Successfully.";
-			}
-		
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CoursePlanException(e.getMessage());
-		}
-		
-		return result;
-	}
-
-	
-	///// ****************        UPDATE COURSE PLAN DATE         ************* /////
-
-	@Override
-	public String updateDate(int batchId, int dayNumber, int updatedDate) throws CoursePlanException {
-		// TODO Auto-generated method stub
-
-		String result = " CoursePlan Date need to be updated.";
-		
-		try(Connection conn = DBUtil.provideConnection()) {
-			
-			PreparedStatement ps =  conn.prepareStatement("SELECT batchStartDate FROM Batch WHERE batchId = ?");
-			
-			ps.setInt(1, batchId);
-			
-			ResultSet rs = ps.executeQuery();
-			
-			String update = "";
-			
-			if(rs.next()) {
-				Date date = rs.getDate("batchStartDate");
-				update =  date.toString();
-				
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				Calendar c = Calendar.getInstance();
-				
+
 				try {
-					c.setTime(df.parse(update));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					System.out.println(e.getMessage());
+					c.setTime(sdf.parse(dt));
+					
+				} catch (ParseException e) {				
+					System.out.println((Style.RED_BACKGROUND+e.getMessage()+Style.RESET));
+					
 				}
-				
-				c.add(Calendar.DATE, dayNumber-1);
-				
-				update = df.format(c.getTime());
+				c.add(Calendar.DATE, newDay-1);  // number of days to add
+
+				dt = sdf.format(c.getTime());  // dt is now the new date
 			}
 			
+			
+			PreparedStatement ps = conn.prepareStatement("update courseplan set daynumber = ? where batchId = ? AND daynumber = ?");
 
-			PreparedStatement ps2 =  conn.prepareStatement("UPDATE coursePlan SET dayNumber = ? WHERE batchId = ? AND dayNumber = ?");
-			
-			ps2.setInt(1, updatedDate);
-			ps2.setInt(2, batchId);
-			ps2.setInt(3, dayNumber);
-			
-			
-			int x = ps2.executeUpdate();
-			
-			if(x > 0) {
+			ps.setInt(1, newDay);
+			ps.setString(2, batchId);
+			ps.setInt(3, dayNo);
 				
-				PreparedStatement ps3 =  conn.prepareStatement("UPDATE coursePlan SET date = ? WHERE batchId = ? AND dayNumber = ?");
+			int x = ps.executeUpdate();
 				
-				ps3.setString(1, update);
-				ps3.setInt(2, batchId);
-				ps3.setInt(3, updatedDate);
+			if(x>0) {		
 				
+				PreparedStatement ps3 = conn.prepareStatement("update courseplan set planDate = ? where batchId = ? AND daynumber = ?");
+
+				
+				ps3.setString(1, dt);
+				ps3.setString(2, batchId);
+				ps3.setInt(3, newDay);
 				
 				int y = ps3.executeUpdate();
 				
-				if(y > 0) {
-					result = "CoursePlan date updated Successfully.";
-				}
+				if(y>0)
+					message = Style.GREEN+"Status Updated Successfully.."+Style.RESET;	
+				else 
+					throw new CoursePlanException(Style.RED+"Day no "+dayNo+" is not Planned yet.."+Style.RESET);
+			
+				
+			}else {
+				throw new CoursePlanException(Style.RED+"Day no "+dayNo+" is not Planned yet.."+Style.RESET);
 				
 			}
 			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CoursePlanException(e.getMessage());
+		}catch(SQLException e) {
+			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
 		}
-		
-		return result;
+			
+		return message;
 	}
 
+	
+	// View Plans By Date
+	@Override
+	public List<CoursePlan> viewCourseByDate(String date) throws CoursePlanException {
+		
+		List<CoursePlan> coursePlans = new ArrayList<>();
+		
+		try(Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("Select * from courseplan where planDate = ? ");
+			
+			ps.setString(1, date);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {		
+				
+				int pid = rs.getInt("planId");
+				String bid = rs.getString("batchId");
+				int dNo = rs.getInt("daynumber");
+				String topic = rs.getString("topic");
+				Date rdate = rs.getDate("planDate");
+				boolean staus = rs.getBoolean("status");
+				
+				String dt = rdate.toString();
+				
+				CoursePlan course = new CoursePlan(pid, bid, dNo, topic, dt, staus);
+				
+				coursePlans.add(course);
+				
+			}
+			
+			if(coursePlans.size() == 0)
+				throw new CoursePlanException(Style.RED_BACKGROUND+"No Plan for this Date"+Style.RESET);
+			
+		}catch(SQLException e) {
+			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
+		}
+		
+		return coursePlans;
+	}
+
+
+	
+	
+	// Update Status of Course table
+	@Override
+	public String updateStatusAdmin(String batchId, int dayNo) throws CoursePlanException {
+		
+		String message = Style.RED+"Status Not Updated..."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn .prepareStatement("update courseplan set status = false where batchId = ? AND daynumber = ?");
+			
+			ps.setString(1, batchId);
+			ps.setInt(2, dayNo);
+			
+			int x = ps.executeUpdate();
+			
+			if(x>0) {		
+				message = Style.GREEN+"Status Updated Successfully.."+Style.RESET;	
+			}else {
+				throw new CoursePlanException(Style.RED+"Day no "+dayNo+" is not Planned yet.."+Style.RESET);
+			}
+		}catch(Exception e) {
+			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+		}
+		
+		return message;
+		
+	}
+	
 }

@@ -6,18 +6,17 @@ import com.learninghub.exceptions.FacultyException;
 import com.learninghub.model.Faculty;
 
 public interface FacultyDao {
-
-	public Faculty login(String username, String password) throws FacultyException;
 	
-	public String createFaculty(Faculty faculty) throws FacultyException;
+	public String addFaculty(Faculty faculty) throws FacultyException;
 	
-	public List<Faculty> allFaculty() throws FacultyException;
-
-	public String updateFaculty(String updatedFeild, String update, int facultyId) throws FacultyException;
+	public List<Faculty> getAllFacultyDetails()throws FacultyException;
 	
-	public String forgetPassword(String mobile, String email, String Password)throws FacultyException;
+	public List<Faculty> searchFacultyByName(String name) throws FacultyException;
 	
-	public String updatePassword(int facultyId, String password) throws FacultyException;
+	public Faculty searchFacultyById(int id) throws FacultyException;
 	
-
+	public String updateFacultyDetails(String str, String set, int id) throws FacultyException;
+	
+	public String deleteFaculty(int facultyId) throws FacultyException;
+	
 }

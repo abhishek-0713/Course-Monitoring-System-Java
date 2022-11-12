@@ -2,7 +2,10 @@ package com.learninghub.main.courseplan;
 
 import java.util.Scanner;
 
+import com.learninghub.extrafeatures.Style;
+
 public class CoursePlanOptions {
+	
 
 	public static void CourseOptions() {
 		
@@ -12,52 +15,69 @@ public class CoursePlanOptions {
 			
 			while(true) {
 				
-				System.out.println("1. Add Course Plan");
+				System.out.println(Style.CYAN+"1. Add Course Plan");
 				System.out.println("2. Update Course Plan");
 				System.out.println("3. View Course Plan");
-				System.out.println("4. Back");
-				System.out.println("5. Close");
+				System.out.println("4. Delete Course Plan");
+				System.out.println("5. Back");
+				System.out.println("6. Close"+Style.RESET);
 				
 				int ch = sc.nextInt();
 				
 				if(ch == 1) {
 					System.out.println("Enter Faculty ID: ");
 					int facultyId = sc.nextInt();
-					if(CheckFaculty.checkFacultyId(facultyId)) {					
-						CreateCoursePlan.addCoursePlan(facultyId);
+					if(CheckFacultyId.checkFacultyId(facultyId)) {					
+						CreateCoursePlanFaculty.addCoursePlanMtd(facultyId);
 						
 					}else {
-						System.out.println("No Faculty Present with FacultyId "+facultyId);
+						System.out.println();
+						System.out.println(Style.RED+"No Faculty Present with FacultyId "+facultyId+Style.RESET);
+						System.out.println();
 					}		
 					
-				}
-				else if(ch == 2) {
+				}else if(ch == 2) {
 					UpdateOptions.CourseOptions();
 					
-				}
-				else if(ch == 3) {
-					ViewChoice.viewOptions();
+				}else if(ch == 3) {
+					ViewOptions.viewOptions();
 					
-				}
-				else if(ch == 5) {
+				}else if(ch == 4) {
+					System.out.println("Enter Faculty ID: ");
+					int facultyId = sc.nextInt();
+					
+					if(CheckFacultyId.checkFacultyId(facultyId)) {
+						DeleteCoursePlan.deletePlan(facultyId);
+					}else {
+						System.out.println();
+						System.out.println(Style.RED+"No Faculty Present with FacultyId "+facultyId+Style.RESET);
+						System.out.println();
+					}		
+					
+				}else if(ch == 5) {
 					break;
 					
 				}else if(ch == 6) {
-					System.out.println("See You Soon...");
+					System.out.println();
+					System.out.println(Style.GREEN_BOLD_BRIGHT+"See You Soon..."+Style.RESET);
 					System.exit(0);
 					
 				}else {
-					System.out.println("Wrong Input Try Again!");					
+					System.out.println();
+					System.out.println(Style.RED+"Wrong Input Try Again!"+Style.RESET);
+					System.out.println();
+					
 				}
 				
 			}
 		}catch (Exception e) {
-			System.out.println("Please Enter Right Input");
+			System.out.println();
+			System.out.println(Style.RED+"Please Enter Right Input"+Style.RESET);
+			System.out.println();
 			CourseOptions();
 			
 		}
 		
 	}
-	
 	
 }

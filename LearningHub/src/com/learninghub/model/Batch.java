@@ -1,110 +1,109 @@
 package com.learninghub.model;
 
-public class Batch {
 
-	private int batchId;
+public class Batch {
+	
+	private String batchId;
 	private int courseId;
 	private int facultyId;
-	private int numberOfStudents;
-	private String batchStartDate;
+	private String facultyName;
+
+	private int noOfStudents;
+	private String batchstartDate;
 	private String duration;
+	
+	public String getFacultyName() {
+		return facultyName;
+	}
+	public void setFacultyName(String facultyName) {
+		this.facultyName = facultyName;
+	}
+	public String getBatchId() {
+		return batchId;
+	}
+	public void setBatchId(String batchId) {
+		this.batchId = batchId;
+	}
+	public int getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(int courseId) {
+		this.courseId = courseId;
+	}
+	public int getFacultyId() {
+		return facultyId;
+	}
+	public void setFacultyId(int facultyId) {
+		this.facultyId = facultyId;
+	}
+	public int getNoOfStudents() {
+		return noOfStudents;
+	}
+	public void setNoOfStudents(int noOfStudents) {
+		this.noOfStudents = noOfStudents;
+	}
+	public String getBatchstartDate() {
+		return batchstartDate;
+	}
+	public void setBatchstartDate(String batchstartDate) {
+		this.batchstartDate = batchstartDate;
+	}
+	public String getDuration() {
+		return duration;
+	}
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+	
 	
 	
 	public Batch() {
 		super();
 	}
-
-
-	public Batch(int batchId, int courseId, int facultyId, int numberOfStudents, String batchStartDate,
+	
+	
+	public Batch(String batchId, int courseId, int facultyId, int noOfStudents, String batchstartDate,
 			String duration) {
 		super();
 		this.batchId = batchId;
 		this.courseId = courseId;
 		this.facultyId = facultyId;
-		this.numberOfStudents = numberOfStudents;
-		this.batchStartDate = batchStartDate;
+		this.noOfStudents = noOfStudents;
+		this.batchstartDate = batchstartDate;
 		this.duration = duration;
 	}
-
-
-	public Batch(int courseId, int numberOfStudents, String batchStartDate, String duration) {
-		// TODO Auto-generated constructor stub
+	
+	
+	
+	public Batch(String batchId, int courseId, int facultyId, String facultyName, int noOfStudents,
+			String batchstartDate, String duration) {
 		super();
-		this.courseId = courseId;
-		this.numberOfStudents = numberOfStudents;
-		this.batchStartDate = batchStartDate;
-		this.duration = duration;
-	}
-
-
-	public int getBatchId() {
-		return batchId;
-	}
-
-
-	public void setBatchId(int batchId) {
 		this.batchId = batchId;
-	}
-
-
-	public int getCourseId() {
-		return courseId;
-	}
-
-
-	public void setCourseId(int courseId) {
 		this.courseId = courseId;
-	}
-
-
-	public int getFacultyId() {
-		return facultyId;
-	}
-
-
-	public void setFacultyId(int facultyId) {
 		this.facultyId = facultyId;
-	}
-
-
-	public int getNumberOfStudents() {
-		return numberOfStudents;
-	}
-
-
-	public void setNumberOfStudents(int numberOfStudents) {
-		this.numberOfStudents = numberOfStudents;
-	}
-
-
-	public String getBatchStartDate() {
-		return batchStartDate;
-	}
-
-
-	public void setBatchStartDate(String batchStartDate) {
-		this.batchStartDate = batchStartDate;
-	}
-
-
-	public String getDuration() {
-		return duration;
-	}
-
-
-	public void setDuration(String duration) {
+		this.facultyName = facultyName;
+		this.noOfStudents = noOfStudents;
+		this.batchstartDate = batchstartDate;
 		this.duration = duration;
 	}
-
-
+	
+	
+	public Batch(String batchId, int courseId, int noOfStudents, String batchstartDate, String duration) {
+		super();
+		this.batchId = batchId;
+		this.courseId = courseId;
+		this.noOfStudents = noOfStudents;
+		this.batchstartDate = batchstartDate;
+		this.duration = duration;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Batch [batchId=" + batchId + ", courseId=" + courseId + ", facultyId=" + facultyId
-				+ ", numberOfStudents=" + numberOfStudents + ", batchStartDate=" + batchStartDate + ", duration="
+				+ ", noOfStudents=" + noOfStudents + ", batchstartDate=" + batchstartDate + ", duration="
 				+ duration + "]";
 	}
-
 	
 	
 }
-

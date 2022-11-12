@@ -1,6 +1,7 @@
 package com.learninghub.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,318 +9,353 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.learninghub.exceptions.BatchException;
+import com.learninghub.extrafeatures.Style;
 import com.learninghub.model.Batch;
-import com.learninghub.model.generateReport;
+import com.learninghub.model.Report;
 import com.learninghub.utility.DBUtil;
 
-public class BatchDaoImpl implements BatchDao {
+public class BatchDaoImpl implements BatchDao{
+
 	
-	///// ****************        CREATE BATCH          ************* /////
+	// Add New Batch into Database
 	@Override
-	public String createBatch(Batch batch) throws BatchException {
+	public String addBatch(Batch batch) throws BatchException {
 		
-		String result = "No Batch Record Inserted.";
+		String message = Style.RED+"Data Not Inserted..."+Style.RESET;
 		
-		Connection conn = DBUtil.provideConnection();
-		
-		try {
-			PreparedStatement ps =  conn.prepareStatement("SELECT courseName FROM Course WHERE courseId = ?");
+		try(Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn .prepareStatement("select courseName from course where courseId = ?");
 			
 			ps.setInt(1, batch.getCourseId());
 			
 			ResultSet rs = ps.executeQuery();
 			
-			String courseName = "";
-			
-			if(rs.next()) {
-				courseName = rs.getString("courseName");
+			String cName = "";
+			if(rs.next()) {		
+				cName = rs.getString("courseName");
+				
+			}else {
+				throw new BatchException(Style.RED_BACKGROUND+"Course Id does not exist."+Style.RESET);
 			}
 			
 			
-			PreparedStatement ps2 = conn.prepareStatement("SELECT COUNT(courseId) FROM Batch WHERE courseId = ?");
+			PreparedStatement ps1 = conn .prepareStatement("select count(courseId) from Batch where courseId = ?");
 			
-			ps2.setInt(1, batch.getCourseId());
+			ps1.setInt(1, batch.getCourseId());
 			
-			ResultSet rs2 = ps2.executeQuery();
+			ResultSet rs1 = ps1.executeQuery();
 			
-			int id = 0;
-			
-			if(rs2.next()) {
-				id = rs2.getInt(1);
-			}
-			id++;
-			
-			String convert = String.format("%03d", id);
-			String batchId = courseName + convert;
-			
-			
-			PreparedStatement ps3 = conn.prepareStatement("INSERT INTO Batch VALUES(?,?,?,?,?,?)");
 
-			ps3.setString(1, batchId);
-			ps3.setInt(2, batch.getCourseId());
-			ps3.setInt(3, batch.getFacultyId());
-			ps3.setInt(4, batch.getNumberOfStudents());
-			ps3.setString(5, batch.getBatchStartDate());
-			ps3.setString(6, batch.getDuration());
-			
-			int x = ps3.executeUpdate();
-			
-			if(x > 0) {
-				result = "New Batch Created Successfully.";
+			int count = 0;
+			if(rs1.next()) {		
+				count = rs1.getInt(1);
+			}else {
+				throw new BatchException(Style.RED_BACKGROUND+"Course Id does not exist."+Style.RESET);
 			}
 			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new BatchException(e.getMessage());
+			count++;
+			String text = String.format("%03d", count);
+			
+			String batchId = cName + text;
+			
+			PreparedStatement ps2 = conn .prepareStatement("insert into Batch(batchId, courseId, noOfStudents, batchstartDate, duration) values(?,?,?,?,?)");
+			
+			ps2.setString(1, batch.getBatchId());
+			ps2.setInt(2, batch.getCourseId());
+			ps2.setInt(3,batch.getNoOfStudents());
+			ps2.setString(4, batch.getBatchstartDate());
+			ps2.setString(5, batch.getDuration());
+			
+			int x = ps2.executeUpdate();
+			
+			if(x>0) {		
+				message = Style.GREEN+"New Course Added Successfully.."+Style.RESET;	
+				
+			}else {
+				throw new BatchException(Style.RED_BACKGROUND+"Duplicate Entry"+Style.RESET);
+				
+			}
+			
+		}catch(SQLException e) {
+			
+			throw new BatchException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
 		}
 		
-		return result;
-		
+		return message;
 	}
 
 	
-	///// ****************        UPDATE BATCH          ************* /////
-	@Override
-	public String updateBatch (String updateField, String update, int batchId) throws BatchException {
-		
-		String result = "Batch Data Need To Be Updated.";
-		
-		Connection conn = DBUtil.provideConnection();
-		
-		try {
-			PreparedStatement ps = conn.prepareStatement("UPDATE Batch SET " + updateField + " = ? WHERE BatchId = ?");
-			
-			ps.setString(1, update);
-			ps.setInt(2, batchId);
-			
-			int x = ps.executeUpdate();
-			
-			if(x > 0) {
-				result = "Batch Changes Updated.";
-			}
-			else {
-				throw new BatchException("Batch Suggested For Changes Does Not Exists.");
-			}
-			
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new BatchException(e.getMessage());
-
-		}
-		
-		return result;
-		
-	}
-
 	
-	///// ****************        SEARCH BATCH          ************* /////
+	// Search Batch With id
 	@Override
-	public Batch searchBatchById(int batchId) throws BatchException {
+	public Batch searchBatchById(String id) throws BatchException {
 		
 		Batch batch = null;
-			
 		
-		try(Connection conn =  DBUtil.provideConnection()) {
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps = conn.prepareStatement("SELECT A.batchId, A.courseId, A.facultyId, A.numberOfStuents, A.batchStartDate, A.duration FROM Batch A, Faculty B WHERE  A.facultyId = B.facultyId AND A.batchId = ?");
 			
-			ps.setInt(1, batchId);
+			PreparedStatement ps = conn .prepareStatement("Select b.batchId, b.courseId, b.facultyId, f.facultyFname, b.noOfStudents, b.batchstartDate, b.duration from Batch b, Faculty f where b.facultyID = f.facultyID and b.batchId = ?");
+			
+			ps.setString(1, id);
 			
 			ResultSet rs = ps.executeQuery();
 			
-			if(rs.next()) {
-				int batchid = rs.getInt("batchId");
-				int courseid = rs.getInt("courseId");
-				int facultyid = rs.getInt("facultyId");
-				int numberofstudents = rs.getInt("numberOfStudents");
-				String batchstartdate = rs.getString("batchStartDate");
-				String batchduration = rs.getString("duration");
+			if(rs.next()) {		
+				String bid = rs.getString("batchId");
+				int cid = rs.getInt("courseId");
+				int fid = rs.getInt("facultyId");
+				String fName = rs.getString("facultyFname");
+				int nos = rs.getInt("noOfStudents");
+				Date date = rs.getDate("batchstartDate");
+				String dur = rs.getString("duration");
 				
-				batch = new Batch(batchid, courseid, facultyid, numberofstudents, batchstartdate, batchduration );
-		
-			}
-			else {
-				throw new BatchException(batchId + " is Not a Valid BatchId.");
-			}
+				String sDate = date.toString();
+				
+				batch = new Batch(bid,cid,fid,fName,nos,sDate,dur);
+				
+			}else 
+				throw new BatchException(Style.RED_BACKGROUND+"Batch does not exist with this id "+ id + "."+Style.RESET);
 			
+		}catch(SQLException e) {
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new BatchException(e.getMessage());
-
+			throw new BatchException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
 		}
+		
+		
 		return batch;
-		
 	}
 
-	
-	///// ****************        VIEW BATCH          ************* /////
-	@Override
-	public List<Batch> viewallBatch() throws BatchException {
-		
-		List<Batch> allBatch = new ArrayList<>();
-		
 
-		try(Connection conn =  DBUtil.provideConnection()) {
+	
+	// Search Batch With Name
+	@Override
+	public List<Batch> searchBatchByName(String name) throws BatchException {
+		
+		List<Batch> batches = new ArrayList<>();
+		
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Batch");
+			
+			PreparedStatement ps = conn .prepareStatement("Select b.batchId, b.courseId, b.facultyId, f.facultyFname, b.noOfStudents, b.batchstartDate, b.duration from Batch b, Faculty f where b.courseId = ("
+					+ "Select courseId from course where courseName = ?) and b.facultyID = f.facultyID");
+			
+			ps.setString(1, name);
 			
 			ResultSet rs = ps.executeQuery();
 			
-			while(rs.next()) {
-				int batchid = rs.getInt("batchId");
-				int courseid = rs.getInt("courseId");
-				int facultyid = rs.getInt("facultyId");
-				int numberofstudents = rs.getInt("numberOfStudents");
-				String batchstartdate = rs.getString("batchStartDate");
-				String batchduration = rs.getString("duration");
+			while(rs.next()) {		
+				String bid = rs.getString("batchId");
+				int cid = rs.getInt("courseId");
+				int fid = rs.getInt("facultyId");
+				String fName = rs.getString("facultyFname");
+				int nos = rs.getInt("noOfStudents");
+				Date date = rs.getDate("batchstartDate");
+				String dur = rs.getString("duration");
 				
-				Batch batch = new Batch(batchid, courseid, facultyid, numberofstudents, batchstartdate, batchduration );
-		
-				allBatch.add(batch);
-			}
-			
-			
-			if(allBatch.size() == 0){
+				String sDate = date.toString();
 				
-				throw new BatchException("No Batch Listed In the Course");
+				Batch batch = new Batch(bid,cid,fid,fName,nos,sDate,dur);
+
+				
+				batches.add(batch);
 			}
+			if(batches.size() == 0)
+				throw new BatchException(Style.RED_BACKGROUND+"Batch does not exist with this name "+ name + "."+Style.RESET);
 			
+		}catch(SQLException e) {
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new BatchException(e.getMessage());
-
-		}
-		return allBatch;
-		
-	}
-
-	
-	///// ****************        ALLOCATE FACULTY TO A BATCH          ************* /////
-	@Override
-	public String allocateFaculty(int facultyId, int batchId) throws BatchException {
-		
-
-		String result = "No Batch Allocated For BatchId : " + batchId;
-		
-		
-		
-		try(Connection conn = DBUtil.provideConnection()) {
+			throw new BatchException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
 			
-			PreparedStatement ps = conn.prepareStatement("UPDATE Batch SET facultyId = ? WHERE BatchId = ?");
-			
-			
-			ps.setInt(1, facultyId);
-			ps.setInt(2, batchId);
-			
-			int x = ps.executeUpdate();
-			
-			if(x > 0) {
-				result = "Faculty Allocated to the Batch.";
-			}
-			else {
-				throw new BatchException("Batch Suggested For Changes Does Not Exists.");
-			}
-			
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new BatchException(e.getMessage());
-
 		}
 		
-		return result;
-
-		
+		return batches;
 	}
-	
-	
-	///// ****************        GEANERATE REPORT FOR EVERY BATCH          ************* /////
-	@Override
-	public List<generateReport> generateReportFromBatch() throws BatchException {
-		
-		List<generateReport> report = new ArrayList<>();
-		
 
-		try(Connection conn =  DBUtil.provideConnection()) {
-			
-			PreparedStatement ps = conn.prepareStatement("SELECT A.batchId, A.courseId, A.numberOfStudents, A.batchStartDate, A.duration, B.facultyName, COUNT(C.status WHERE status IS TRUE) as Completed FROM Batch A, Faculty B, coursePlan C WHERE A.facultyId = B.facultyId and A.batchId = C.batchId Group By C.batchId Order By ASC");
+
+
+	// See All Batch Details Present in Database
+	@Override
+	public List<Batch> allBatch() throws BatchException {
 		
+		List<Batch> batches = new ArrayList<>();
+		
+		try(Connection conn = DBUtil.provideConnection()){
+					
+			PreparedStatement ps = conn .prepareStatement("Select b.batchId, b.courseId, b.facultyId, f.facultyFname, b.noOfStudents, b.batchstartDate, b.duration  from Batch b , Faculty f where b.facultyID = f.facultyID;");
+			
 			ResultSet rs = ps.executeQuery();
 			
-			
-			while(rs.next()) {
-				int batchid = rs.getInt("batchId");
-				int courseid = rs.getInt("courseId");
-				String facultyname = rs.getString("facultyName");
-				int numberofstudents = rs.getInt("numberOfStudents");
-				String batchstartdate = rs.getString("batchStartDate");
-				String batchduration = rs.getString("duration");
-				int completed = rs.getInt("numberOfStudents");
+			while(rs.next()) {		
+				String bid = rs.getString("batchId");
+				int cid = rs.getInt("courseId");
+				int fid = rs.getInt("facultyId");
+				String fName = rs.getString("facultyFname");
+				int nos = rs.getInt("noOfStudents");
+				Date date = rs.getDate("batchstartDate");
+				String dur = rs.getString("duration");
 				
-				generateReport gr = new generateReport(batchid,batchstartdate,courseid,batchduration,numberofstudents,facultyname,completed);
-		
-				report.add(gr);
-			}
-			
-			
-			if(report.size() == 0){
+				String sDate = date.toString();
 				
-				throw new BatchException("No Batch Listed In the Course");
+				Batch batch = new Batch(bid,cid,fid,fName,nos,sDate,dur);
+//				System.out.println(batch);
+				
+				batches.add(batch);
 			}
+			if(batches.size() == 0)
+				throw new BatchException(Style.RED_BACKGROUND+"Batch does not exist."+Style.RESET);
 			
+		}catch(SQLException e) {
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new BatchException(e.getMessage());
-
+			throw new BatchException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
 		}
-		return report;
-
+		
+		return batches;
 		
 	}
-	
-	
-	///// ****************        DELETE BATCH          ************* /////
-	@Override
-	public String deleteBatch(int batchId) throws BatchException {
 
-		String result = "Select Batch to DELETE";
+
+	
+	// Update details of Batch table
+	@Override
+	public String updateBatch(String str, String set, String name) throws BatchException {
 		
+		String message = Style.RED+"Batch Data Not Updated..."+Style.RESET;
 		
-		try(Connection conn = DBUtil.provideConnection()) {
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps =  conn.prepareStatement("DELETE FROM Batch WHERE batchId = ?");
+			PreparedStatement ps = conn.prepareStatement("update batch set "+ str +" = ? where batchId = ?");
 			
-			ps.setInt(1, batchId);
-		
+			ps.setString(1, set);
+			ps.setString(2, name);
+			
 			int x = ps.executeUpdate();
 			
-			if(x > 0) {
-				result = "Batch Deleted Successfully.";
+			if(x>0) {		
+				message = Style.GREEN+"Batch Details Updated Successfully.."+Style.RESET;	
+			}else {
+				throw new BatchException(Style.RED+"Batch Not Exist"+Style.RESET);
 			}
 			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new BatchException(e.getMessage());
+		} catch (SQLException e) {
+
+			throw new BatchException(Style.RED+"Wrong Data Format"+Style.RESET);
 		}
 		
-		return result;
-		
+		return message;
 	}
 
 
+	
+	// Delete details from Batch table
+	@Override
+	public String deleteBatch(String batchId) throws BatchException {
+		
+		String message = Style.RED+"Batch Data Not Updated..."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("delete from batch where batchId = ?");
+			
+			ps.setString(1, batchId);
+			
+			int x = ps.executeUpdate();
+			
+			if(x>0) {		
+				message = Style.GREEN+"Batch Deleted Successfully.."+Style.RESET;	
+			}else {
+				throw new BatchException(Style.RED+"Batch Not Exist"+Style.RESET);
+			}
+			
+		} catch (SQLException e) {
+
+			throw new BatchException(Style.RED+"Wrong Data Format"+Style.RESET);
+		}
+		
+		return message;
+	}
+
+
+	
+	// Allocate Faculty in Batch
+	@Override
+	public String allocateFaculty(int fName, String batchId) throws BatchException {
+		
+		String message = Style.RED+"Faculty not allocated to "+batchId+" batch.."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("update batch set facultyId = ? where batchId = ?");
+			
+			ps.setInt(1, fName);
+			ps.setString(2, batchId);
+			
+			int x = ps.executeUpdate();
+			
+			if(x>0) {		
+				message = Style.GREEN+"Faculty allocated to "+batchId+" batch.."+Style.RESET;	
+			}else {
+				throw new BatchException(Style.RED+"Batch doesn't Not Exist"+Style.RESET);
+			}
+			
+		} catch (SQLException e) {
+
+			throw new BatchException(Style.RED+"Wrong Data Format"+Style.RESET);
+		}
+		
+		return message;
+	}
+
+
+	
+	
+	// Get all Detailed Batch Report
+	@Override
+	public List<Report> generateReport() throws BatchException {
+		
+		List<Report> reports = new ArrayList<>();
+		
+		try(Connection conn = DBUtil.provideConnection()){
+			
+			
+			PreparedStatement ps = conn .prepareStatement("select b.batchId, b.courseId, f.facultyFname, b.noOfStudents, b.batchstartDate, b.duration, count(c.daynumber) as planned, "
+														+ "(select count(c.status) where status is true) as Completed from batch b inner join faculty f inner join courseplan c "
+														+ "on b.facultyID = f.facultyID and b.batchid = c.batchId group by c.batchId;");
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {		
+				String bid = rs.getString("batchId");
+				int cid = rs.getInt("courseId");
+				String fName = rs.getString("facultyFname");
+				int sno = rs.getInt("noOfStudents");
+				Date date = rs.getDate("batchstartDate");
+				String dur = rs.getString("duration");
+				int pland = rs.getInt("noOfStudents");
+				int comp = rs.getInt("noOfStudents");
+				
+				String sDate = date.toString();
+				
+				Report report = new Report(bid,cid,fName,sno,sDate,dur,pland,comp);
+				
+				reports.add(report);	
+			} 
+			if(reports.size()==0)
+				throw new BatchException(Style.RED_BACKGROUND+"No Batche is Started."+Style.RESET);
+			
+		}catch(SQLException e) {
+			
+			throw new BatchException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
+		}
+		
+		
+		return reports;
+	}
+	
+	
 }

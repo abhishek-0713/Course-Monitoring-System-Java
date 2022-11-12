@@ -1,57 +1,63 @@
 package com.learninghub.main.batch;
 
+
 import java.util.Scanner;
 
 import com.learninghub.dao.BatchDao;
 import com.learninghub.dao.BatchDaoImpl;
 import com.learninghub.exceptions.BatchException;
 import com.learninghub.exceptions.InputException;
+import com.learninghub.extrafeatures.Style;
 import com.learninghub.model.Batch;
 
-
 public class CreateBatch {
+	
 
-	@SuppressWarnings("resource")
-	public static void main(String[] args) throws InputException {
-		
+	public static void addBatchMtd() throws InputException{
 		
 		try {
+			
+			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			
-			System.out.print("Enter Batch CourseId : ");
-			int courseId = sc.nextInt();
+			System.out.println(Style.CYAN+"Enter BatchId"+Style.RESET);
+			String bId = sc.next();
 			
-			System.out.print("Enter Total Students of the Batch  : ");
-			int numberOfStudents = sc.nextInt();
+			sc.nextLine();
+			System.out.println(Style.CYAN+"Enter CourseId of the Batch"+Style.RESET);
+			int cId = sc.nextInt();
+		
+			System.out.println(Style.CYAN+"Enter Students no. of the Batch"+Style.RESET);
+			int noStud = sc.nextInt();
 			
-			System.out.print("Enter Start Date of Batch [yyyy-MM-dd] : ");
+			System.out.println(Style.CYAN+"Enter Start date of the Batch(YYYY-MM-DD)."+Style.RESET);
 			String date = sc.next();
 			
 			sc.nextLine();
+			System.out.println(Style.CYAN+"Enter Batch Duration"+Style.RESET);
+			String bDur = sc.nextLine();
 			
-			System.out.print("Enter Batch Duration : ");
-			String duration = sc.nextLine();
 			
-			Batch batch = new Batch(courseId, numberOfStudents, date, duration);
+			Batch batch = new Batch(bId, cId, noStud, date, bDur);
 			
-			BatchDao bdo = new BatchDaoImpl();
-			
+			BatchDao dao1 = new BatchDaoImpl();
 			
 			try {
-				String msg = bdo.createBatch(batch);
-				System.out.println(msg);
-			} 
-			catch (BatchException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-
+				String str = dao1.addBatch(batch);
+				System.out.println();
+				System.out.println(str);
+				System.out.println();
 				
+			} catch (BatchException e) {
+
+				System.out.println();
+				System.out.println(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+				System.out.println();
 			}
-	
+			
+		}catch(Exception e) {
+			throw new InputException(Style.RED+"Please Enter Right Input"+Style.RESET);
 		}
-		catch(Exception e) {
-			throw new InputException("Invalid Input");
-		}
+		
 	}
 }

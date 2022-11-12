@@ -3,23 +3,25 @@ package com.learninghub.dao;
 import java.util.List;
 
 import com.learninghub.exceptions.CoursePlanException;
-import com.learninghub.model.coursePlan;
+import com.learninghub.model.CoursePlan;
 
 public interface CoursePlanDao {
-
-	public String createCoursePlan(int batchId, int dayNumber)throws CoursePlanException;
 	
-	public List<coursePlan> viewCoursePlan() throws CoursePlanException;
+	public String addCoursePlan(String batchId, int dayNo) throws CoursePlanException;
 	
-	public List<coursePlan> viewCoursePlanperDay(String date) throws CoursePlanException;
+	public String updateStatus(String batchId, int dayNo) throws CoursePlanException;
 	
-	public List<coursePlan> viewFacultyCP(int facultyId) throws CoursePlanException;
+	public String updateStatusAdmin(String batchId, int dayNo) throws CoursePlanException;
 	
-	public String updateStatus(int batchId, int dayNumber)throws CoursePlanException;
+	public String updateTopic(String batchId, int dayNo, String topic) throws CoursePlanException;
 	
-	public String updateTopic(int batchId, int dayNumber, String topic)throws CoursePlanException;
+	public String updateDate(String batchId, int dayNo, int newDay) throws CoursePlanException;
 	
-	public String updateDate(int batchId, int dayNumber, int updatedDate) throws CoursePlanException;
-		
+	public String deleteStatus(String batchId, int dayNo) throws CoursePlanException;
 	
+	public List<CoursePlan> viewAllCoursePlanDateWise() throws CoursePlanException;
+	
+	public List<CoursePlan> viewFacultyCoursePlan(int facultyId) throws CoursePlanException;
+	
+	public List<CoursePlan> viewCourseByDate(String date) throws CoursePlanException;
 }

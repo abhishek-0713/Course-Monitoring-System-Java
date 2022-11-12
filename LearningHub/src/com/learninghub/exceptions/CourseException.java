@@ -1,18 +1,15 @@
 package com.learninghub.exceptions;
 
-public class CourseException extends Exception {
-
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+@SuppressWarnings("serial")
+public class CourseException extends Exception{
+	
 	public CourseException() {
-		
+		super();
 	}
+	
 	
 	public CourseException(String message) {
 		super(message);
 	}
+	
 }

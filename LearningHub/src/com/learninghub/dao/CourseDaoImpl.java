@@ -8,191 +8,185 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.learninghub.exceptions.CourseException;
+import com.learninghub.extrafeatures.Style;
 import com.learninghub.model.Course;
 import com.learninghub.utility.DBUtil;
 
-public class CourseDaoImpl implements CourseDao {
-
-	///// ****************        CREATE COURSE          ************* /////
-
+public class CourseDaoImpl implements CourseDao{
+	
+	
+	// Add New Course into Database
 	@Override
-	public String createCourse(Course course) throws CourseException {
-		// TODO Auto-generated method stub
-
-		String result = "No COURSE Record Inserted.";
+	public String addCourse(Course course) throws CourseException{
 		
-		try(Connection conn = DBUtil.provideConnection()) {
+		String message = Style.RED+"Data Not Inserted..."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps =  conn.prepareStatement("SELECT courseName FROM Course WHERE courseId = ?");
+			PreparedStatement ps = conn .prepareStatement("insert into course(courseName, courseFee, courseDesc) values(?,?,?)");
 			
 			ps.setString(1, course.getCourseName());
 			ps.setInt(2, course.getCourseFee());
-			ps.setString(3, course.getCourseDescription());		
+			ps.setString(3, course.getCourseDesc());
 			
 			int x = ps.executeUpdate();
 			
-			if(x > 0) {
-				result = "New Course Created Successfully.";
+			if(x>0) {		
+				message = Style.GREEN+"New Course Added Successfully.."+Style.RESET;	
+			}else {
+				throw new CourseException(Style.RED_BACKGROUND+"Duplicate Entry"+Style.RESET);
 			}
 			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CourseException(e.getMessage());
+		}catch(SQLException e) {
+//			e.printStackTrace();
+			
+			throw new CourseException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
 		}
 		
-		return result;
-		
+		return message;
 	}
-
 	
-	///// ****************        UPDATE COURSE          ************* /////
-
+	
+	// Search Course With Name
 	@Override
-	public String updateCourse(String updateFeild, String update, String courseName) throws CourseException {
-		// TODO Auto-generated method stub
-
-		String result = "COURSE Data Need to be Updated.";
+	public Course searchCourse(String name) throws CourseException{
 		
-		try(Connection conn = DBUtil.provideConnection()) {
-			
-			PreparedStatement ps =  conn.prepareStatement("UPDATE Course SET "+ updateFeild + " = ? WHERE courseName = ?");
-			
-			ps.setString(1, updateFeild);
-			ps.setString(2, courseName);
-			
-			int x = ps.executeUpdate();
-			
-			if(x > 0) {
-				result = "New Course Created Successfully.";
-			}
-			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CourseException(e.getMessage());
-		}
-		
-		return result;
-	}
-
-	
-	///// ****************        SEARCH COURSE          ************* /////
-
-	@Override
-	public Course searchCourse(String courseName) throws CourseException {
-		// TODO Auto-generated method stub
-
 		Course course = null;
 		
-		try(Connection conn = DBUtil.provideConnection()) {
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps =  conn.prepareStatement("SELECT * FROM Course WHERE courseName = ?");
+			PreparedStatement ps = conn .prepareStatement("Select * from Course where courseName = ?");
 			
-			ps.setString(1, courseName);
+			ps.setString(1, name);
 			
 			ResultSet rs = ps.executeQuery();
 			
-			if(rs.next()) {
-				int courseId = rs.getInt("courseId");
-				String coursename = rs.getString("courseName");
-				int courseFee = rs.getInt("courseFee");
-				String courseDescription = rs.getString("courseDescription");
+			if(rs.next()) {		
 				
-				course = new Course(courseId, coursename, courseFee, courseDescription);
+				int cid = rs.getInt("courseId");
+				String cname = rs.getString("courseName");
+				int cfee = rs.getInt("courseFee");
+				String cdesc = rs.getString("courseDesc");
+				
+				course = new Course(cid, cname, cfee, cdesc);
+				
+			}else {
+				throw new CourseException(Style.RED_BACKGROUND+"Course does not exist."+Style.RESET);
 			}
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CourseException(e.getMessage());
+			
+				
+		}catch(SQLException e) {
+//			e.printStackTrace();
+			
+			throw new CourseException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
 		}
 		
 		return course;
-		
 	}
 
-	
-	///// ****************        COURSE LIST           ************* /////
 
+	// See All Course Details Present in Database
 	@Override
-	public List<Course> allCourseList() throws CourseException {
-		// TODO Auto-generated method stub
-
-		List<Course> courseList = new ArrayList<>();
+	public List<Course> getAllCourse() throws CourseException {
 		
-
-		try(Connection conn = DBUtil.provideConnection()) {
+		List<Course> courses = new ArrayList<>();
+		
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps =  conn.prepareStatement("SELECT * FROM Course");
+			PreparedStatement ps = conn .prepareStatement("Select * from Course");
+
 			
 			ResultSet rs = ps.executeQuery();
 			
-
-			while(rs.next()) {
+			while(rs.next()) {		
 				
-				int courseId = rs.getInt("courseId");
-				String coursename = rs.getString("courseName");
-				int courseFee = rs.getInt("courseFee");
-				String courseDescription = rs.getString("courseDescription");
+				int cid = rs.getInt("courseId");
+				String cname = rs.getString("courseName");
+				int cfee = rs.getInt("courseFee");
+				String cdesc = rs.getString("courseDesc");
 				
-				Course course = new Course(courseId, coursename, courseFee, courseDescription);
+				Course course = new Course(cid, cname, cfee, cdesc);
 				
-				courseList.add(course);
-			}
-	
-			
-			if(courseList.size() == 0) {
-				throw new CourseException("No Courses Created Yet.");
+				courses.add(course);
+				
 			}
 			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CourseException(e.getMessage());
+			if(courses.size() == 0) {
+				throw new CourseException(Style.RED_BACKGROUND+"No Course found.."+Style.RESET);
+			}
+			
+				
+		}catch(SQLException e) {
+//			e.printStackTrace();
+			
+			throw new CourseException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
 		}
 		
-		return courseList;
-
-		
+		return courses;
 	}
 
 	
-	///// ****************        DELETE COURSE          ************* /////
-
+	// Update details of Course table
 	@Override
-	public String deleteBatch(String courseName) throws CourseException {
-		// TODO Auto-generated method stub
-
-		String result = "COURSE Data Need to be Updated.";
+	public String updateCourseDetails(String str, String set, String name) throws CourseException{
 		
-		try(Connection conn = DBUtil.provideConnection()) {
+		String message = Style.RED+"Course Data Not Updated..."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps =  conn.prepareStatement("DELETE FROM Course WHERE courseName = ?");
+			PreparedStatement ps = conn.prepareStatement("update course set "+ str +" = ? where courseName = ?");
 			
-			ps.setString(1, courseName);
+			ps.setString(1, set);
+			ps.setString(2, name);
 			
 			int x = ps.executeUpdate();
 			
-			if(x > 0) {
-				result = "Course deleted Successfully.";
+			if(x>0) {		
+				message = Style.GREEN+"course Details Updated Successfully.."+Style.RESET;	
+			}else {
+				throw new CourseException(Style.RED+"Course Not Exist"+Style.RESET);
 			}
 			
-	
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new CourseException(e.getMessage());
+		} catch (SQLException e) {	
+			throw new CourseException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			
 		}
 		
-		return result;
+		return message;
 	}
+
+
+	// Delete details from Course table
+	@Override
+	public String deleteBatch(String cName) throws CourseException {
+
+		String message = Style.RED+"Batch Data Not Updated..."+Style.RESET;
+		
+		try(Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("delete from course where courseName = ?");
+			
+			ps.setString(1, cName);
+			
+			int x = ps.executeUpdate();
+			
+			if(x>0) {		
+				message = Style.GREEN+"Course Deleted Successfully.."+Style.RESET;	
+			}else {
+				throw new CourseException(Style.RED+"Course Not Exist"+Style.RESET);
+				
+			}
+		}catch (SQLException e) {
+			
+			throw new CourseException(Style.RED+"Wrong Data Format"+Style.RESET);
+		}
+		
+		return message;
+		
+	}
+
+	
 }
+
+

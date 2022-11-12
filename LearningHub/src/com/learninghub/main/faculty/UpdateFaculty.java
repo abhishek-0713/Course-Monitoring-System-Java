@@ -6,8 +6,10 @@ import java.util.Scanner;
 import com.learninghub.dao.FacultyDao;
 import com.learninghub.dao.FacultyDaoImpl;
 import com.learninghub.exceptions.FacultyException;
+import com.learninghub.extrafeatures.Style;
 
 public class UpdateFaculty {
+	
 
 	public static void UpdateById(int id) {
 		
@@ -25,7 +27,7 @@ public class UpdateFaculty {
 				
 				while(true) {	
 					
-					System.out.println("What do you want to update?");
+					System.out.println(Style.CYAN+"What do you want to update?");
 					System.out.println("1. First Name");
 					System.out.println("2. Last Name");
 					System.out.println("3. Address");
@@ -34,7 +36,7 @@ public class UpdateFaculty {
 					System.out.println("6. Mobile");
 					System.out.println("7. Email");
 					System.out.println("8. Back");
-					System.out.println("9. Close");
+					System.out.println("9. Close" +Style.RESET);
 					
 					int ch = sc.nextInt();
 					
@@ -44,7 +46,7 @@ public class UpdateFaculty {
 						break;
 						
 					}else if(ch== 9) {
-						System.out.println("See You Soon...");
+						System.out.println(Style.BANANA_YELLOW+"See You Soon..."+Style.RESET);
 						System.exit(0);	
 					}
 				
@@ -71,7 +73,7 @@ public class UpdateFaculty {
 						break;
 					}
 					else {
-						System.out.println("Wrong Input Try Again");
+						System.out.println(Style.RED+"Wrong Input Try Again"+Style.RESET);
 					}
 				}
 				
@@ -84,18 +86,22 @@ public class UpdateFaculty {
 					
 					String result;
 					try {
-						result = dao.updateFaculty(str, set, id);
-						System.out.println(result);						
-					} 
-					catch (FacultyException e) {
-						System.out.println(e.getMessage());
+						result = dao.updateFacultyDetails(str, set, id);
+						System.out.println();
+						System.out.println(result);
+						System.out.println();
+						
+					} catch (FacultyException e) {
+						System.out.println();
+						System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
+						System.out.println();
 					}
 					
 				}
 				
 				
 				while(flag2) {
-					System.out.print("Want to update anything else?(y/n) : ");
+					System.out.println(Style.CYAN+"Want to update anything else?(y/n)"+Style.RESET);
 					String choice = sc.next();
 					
 					if(choice.equalsIgnoreCase("y")) {
@@ -104,13 +110,17 @@ public class UpdateFaculty {
 						flag = false;
 						break;
 					}else {
-						System.out.println("Wrong Input...!");
+						System.out.println();
+						System.out.println(Style.RED+"Wrong Input...!"+Style.RESET);
+						System.out.println();
 					}
 				}
 			}
 			
 		}catch(InputMismatchException e) {
-			System.out.println("Wrong Input Try Again!");
+			System.out.println();
+			System.out.println(Style.RED+"Wrong Input Try Again!"+Style.RESET);
+			System.out.println();
 			UpdateById(id);
 		}
 

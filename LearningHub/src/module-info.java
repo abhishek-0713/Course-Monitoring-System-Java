@@ -1,3 +1,10 @@
-module LearningHub {
+/**
+ * 
+ */
+/**
+ * @author abhis
+ *
+ */
+module learninghub {
 	requires java.sql;
 }

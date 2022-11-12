@@ -6,13 +6,14 @@ import java.util.Scanner;
 import com.learninghub.dao.CourseDao;
 import com.learninghub.dao.CourseDaoImpl;
 import com.learninghub.exceptions.CourseException;
+import com.learninghub.extrafeatures.Style;
 
 public class UpdateCourse {
 
-	public static void updateCourse(String courseName) {
+	public static void updateCourse(String name){
 		
 		try {
-			
+		
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			
@@ -25,12 +26,12 @@ public class UpdateCourse {
 				
 				while(true) {
 					
-					System.out.println("What do you want to update?");
+					System.out.println(Style.CYAN+"What do you want to update?");
 					System.out.println("1. Course Name");
 					System.out.println("2. Course Fee");
 					System.out.println("3. Course Description");
 					System.out.println("4. Back");
-					System.out.println("5. Close" );
+					System.out.println("5. Close" +Style.RESET);
 					
 					int ch = sc.nextInt();
 					
@@ -41,7 +42,7 @@ public class UpdateCourse {
 						
 					}else if(ch== 5) {
 						System.out.println();
-						System.out.println("See You Soon...");
+						System.out.println(Style.BANANA_YELLOW+"See You Soon..."+Style.RESET);
 						System.exit(0);	
 					}
 					
@@ -57,7 +58,7 @@ public class UpdateCourse {
 						break;
 					}else {
 						System.out.println();
-						System.out.println("Wrong Input Try Again");
+						System.out.println(Style.RED+"Wrong Input Try Again"+Style.RESET);
 						System.out.println();
 						flag2 = false;
 						break;
@@ -72,20 +73,22 @@ public class UpdateCourse {
 					
 					String result;
 					try {
-						result = dao.updateCourse(str, set, courseName);
-		
+						result = dao.updateCourseDetails(str, set, name);
+						System.out.println();
 						System.out.println(result);
+						System.out.println();
 						
 					} catch (CourseException e) {
-
-						System.out.println(e.getMessage());
-
+						
+						System.out.println();
+						System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
+						System.out.println();
 					}
 				}
 				
 				
 				while(flag2) {
-					System.out.print("Want to update anything else?(y/n) : ");
+					System.out.println(Style.CYAN+"Want to update anything else?(y/n)"+Style.RESET);
 					String choice = sc.next();
 					
 					if(choice.equalsIgnoreCase("y")) {
@@ -94,17 +97,20 @@ public class UpdateCourse {
 						flag = false;
 						break;
 					}else {
-						System.out.println("Wrong Input...!");
+						System.out.println();
+						System.out.println(Style.RED+"Wrong Input...!"+Style.RESET);
+						System.out.println();
 					}
 				}
 			}
 			
 		}catch(InputMismatchException e) {
-
-			System.out.println("Wrong Input Try Again!");
-			updateCourse(courseName);
+			System.out.println();
+			System.out.println(Style.RED+"Wrong Input Try Again!"+Style.RESET);
+			System.out.println();
+			updateCourse(name);
 		}
 
-		
 	}
+
 }

@@ -10,6 +10,7 @@ import java.util.Scanner;
 import com.learninghub.dao.CoursePlanDao;
 import com.learninghub.dao.CoursePlanDaoImpl;
 import com.learninghub.exceptions.CoursePlanException;
+import com.learninghub.extrafeatures.Style;
 import com.learninghub.utility.DBUtil;
 
 public class UpdateStatus {
@@ -21,7 +22,7 @@ public class UpdateStatus {
 		
 		try(Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps = conn .prepareStatement("SELECT batchId FROM Batch WHERE facultyId = ?");
+			PreparedStatement ps = conn .prepareStatement("select batchId from batch where facultyId = ?");
 			
 			ps.setInt(1, facultyId);
 			
@@ -32,25 +33,24 @@ public class UpdateStatus {
 			}
 			
 			if(arr.size()==0) {
-				System.out.println(facultyId + " is not Allocated to Any Batch");
+				System.out.println(Style.YELLOW+facultyId + "is not Allocated to Any Batch"+Style.RESET);
 				return;
 			}
 			
-			System.out.print("Choose Batch Id : ");
+			System.out.println(Style.CYAN+"Choose Batch Id :"+Style.RESET);
 			for(int i = 0; i < arr.size(); i++) {
 				System.out.println((i+1)+". " +arr.get(i));
 			}
 			
 			int ch = sc.nextInt();
-			String s = arr.get(ch-1);
-			int batchId  = Integer.parseInt(s);
+			String batchId = arr.get(ch-1);
 			
-			System.out.print("Enter the day no : ");
+			System.out.println(Style.CYAN+"Enter the day no : "+Style.RESET);
 			
 			int dayNo = sc.nextInt();
 			
 			while(true) {
-			System.out.println("Are You Sure?(Not Possible to Revert)(y/n) : ");
+			System.out.println(Style.YELLOW_BOLD_BRIGHT+"Are You Sure?(Not Possible to Revert)(y/n)"+Style.RESET);
 			
 				String choice = sc.next();
 				if(choice.equalsIgnoreCase("y")) 
@@ -58,7 +58,7 @@ public class UpdateStatus {
 				else if(choice.equalsIgnoreCase("n"))
 					return;
 				else
-					System.out.println("Please Enter Right Input");
+					System.out.println(Style.RED+"Please Enter Right Input"+Style.RESET);
 				
 			}
 			CoursePlanDao dao = new CoursePlanDaoImpl();
@@ -70,11 +70,16 @@ public class UpdateStatus {
 				System.out.println();
 				
 			} catch (CoursePlanException e) {
-				System.out.println(e.getMessage());				
+				System.out.println();
+				System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
+				System.out.println();
+				
 			}
 			
 		}catch (Exception e) {
-			System.out.println("Please Enter Right Input");
+			System.out.println();
+			System.out.println(Style.RED+"Please Enter Right Input"+Style.RESET);
+			System.out.println();
 			updateStatus(facultyId);
 		}
 		

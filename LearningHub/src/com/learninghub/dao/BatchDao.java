@@ -4,23 +4,23 @@ import java.util.List;
 
 import com.learninghub.exceptions.BatchException;
 import com.learninghub.model.Batch;
-import com.learninghub.model.generateReport;
+import com.learninghub.model.Report;
 
 public interface BatchDao {
-
-	public String createBatch(Batch batch) throws BatchException;
-
-	public String updateBatch (String updateField, String update, int batchId) throws BatchException;
-
-	public Batch searchBatchById(int batchId) throws BatchException;
-
-	public List<Batch> viewallBatch() throws BatchException;
-
-	public String allocateFaculty(int facultyId, int batchId) throws BatchException;
 	
-	public List<generateReport> generateReportFromBatch() throws BatchException;
+	public String addBatch(Batch batch) throws BatchException;
 	
-	public String deleteBatch(int batchId) throws BatchException;
-
+	public Batch searchBatchById(String id) throws BatchException;
 	
+	public List<Batch> searchBatchByName(String name) throws BatchException;
+	
+	public List<Batch> allBatch() throws BatchException;
+	
+	public String updateBatch (String str, String set, String batchId) throws BatchException;
+	
+	public String deleteBatch(String batchId) throws BatchException;
+	
+	public String allocateFaculty(int fName, String batchId) throws BatchException;
+	
+	public List<Report> generateReport() throws BatchException;
 }

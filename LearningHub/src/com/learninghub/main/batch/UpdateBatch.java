@@ -5,108 +5,115 @@ import java.util.Scanner;
 
 import com.learninghub.dao.BatchDao;
 import com.learninghub.dao.BatchDaoImpl;
-import com.learninghub.exceptions.BatchException;
+import com.learninghub.extrafeatures.Style;
+
+
 
 public class UpdateBatch {
 
-	public static void updateCourse(int batchId) {
+	public static void updateCourse(String batchId) {
 		
-		
-		try (Scanner sc = new Scanner(System.in)) {
+		try {
 			
-			boolean updated = true;
-			boolean isUpdated = true;
+			@SuppressWarnings("resource")
+			Scanner sc = new Scanner(System.in);
 			
-			while(updated) {
-				String s = "";
+			boolean flag = true;
+			boolean flag2 = true;
+			
+			while(flag) {
+				
+				String str = "";
 				
 				while(true) {
-					isUpdated = true;
-					
-					System.out.println("Select For Update.");
-					System.out.println("1. Total Students");
-					System.out.println("2. Start date");
+					flag2 = true;
+					System.out.println(Style.CYAN+"What do you want to update?");
+					System.out.println("1. No OF Students");
+					System.out.println("2. Start Date");
 					System.out.println("3. Batch Duration");
 					System.out.println("4. Back");
-					System.out.println("5. Exit");
+					System.out.println("5. Close" +Style.RESET);
 					
-					int i = sc.nextInt();
+					int ch = sc.nextInt();
 					
-					if(i == 4) {
-						updated = false;
-						isUpdated = false;
+					if(ch == 4) {
+						flag = false;
+						flag2 = false;
 						break;
-					}
-					else if(i == 5) {
-						System.out.println("Come Back Again");
-						System.exit(0);
-
+						
+					}else if(ch== 5) {
+						System.out.println();
+						System.out.println(Style.BANANA_YELLOW+"See You Soon..."+Style.RESET);
+						System.exit(0);	
 					}
 					
-					if(i == 1) {
-						s = "numberOfStudents";
+				
+					if(ch == 1) {
+						str = "noOfStudents";
+						break;
+					}else if(ch == 2) {
+						str = "batchstartDate";
+						break;
+					}else if(ch == 3) {
+						str = "duration";
+						break;
+					}else {
+						System.out.println();
+						System.out.println(Style.RED+"Wrong Input Try Again"+Style.RESET);
+						System.out.println();
+						flag2 = false;
 						break;
 					}
-					else if(i == 2) {
-						s = "batchStartDate";
-						break;
-					}
-					else if(i == 3) {
-						s = "duration";
-						break;
-					}
-					else {
-						System.out.println("Invalid Input");
-
-						isUpdated = false;
-						break;
-					}
-
 				}
 				
-				if(isUpdated) {
+				if(flag2) {
 					sc.nextLine();
-					System.out.print("Enter New Entry : ");
+					System.out.println("Enter New Entry :");
 					String set = sc.nextLine();
 					
-					BatchDao bdo = new BatchDaoImpl();
+					BatchDao dao = new BatchDaoImpl();
 					
-					String ans;
+					String result;
 					try {
-						ans = bdo.updateBatch(s, set, batchId);
-						System.out.println(ans);
-
-					} catch (BatchException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						System.out.println(e.getMessage());
+						result = dao.updateBatch(str, set, batchId);
+						System.out.println();
+						System.out.println(result);
+						System.out.println();
+						
+					} catch (Exception e) {
+						
+						System.out.println();
+						System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
+						System.out.println();
 					}
 				}
 				
-				
-				while(isUpdated) {
-					System.out.println("Invalid Input");
-					String urChoise = sc.next();
+				while(flag2) {
+					System.out.println(Style.CYAN+"Want to update anything else?(y/n)"+Style.RESET);
+					String choice = sc.next();
 					
-					if(urChoise.equalsIgnoreCase("y")) {
-						isUpdated = true;
+					if(choice.equalsIgnoreCase("y")) {
+						flag2 = true;
 						break;
-					}
-					else if(urChoise.equalsIgnoreCase("n")) {
-						updated = false;
+					}else if(choice.equalsIgnoreCase("n")){
+						flag = false;
 						break;
-					}
-					else {
-						System.out.println("Invalid Input");
+					}else {
+						System.out.println();
+						System.out.println(Style.RED+"Wrong Input...!"+Style.RESET);
+						System.out.println();
 					}
 				}
+				
 			}
-		}
-		catch(InputMismatchException e){
 			
-			System.out.println("Invalid Inpit. Try Again");
+		}catch(InputMismatchException e){
+			System.out.println();
+			System.out.println(Style.RED+"Wrong Input Try Again!"+Style.RESET);
+			System.out.println();
 			updateCourse(batchId);
-			
 		}
+
 	}
+
 }

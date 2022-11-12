@@ -8,61 +8,66 @@ import java.util.Scanner;
 import com.learninghub.dao.BatchDao;
 import com.learninghub.dao.BatchDaoImpl;
 import com.learninghub.exceptions.BatchException;
+import com.learninghub.exceptions.FacultyException;
+import com.learninghub.extrafeatures.Style;
 import com.learninghub.utility.DBUtil;
 
 public class AllocateFaculty {
 
-	public static void allocateFaculty() {
+	public static void allocateFaculty() throws FacultyException {
 		
-
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		
 
 		try(Connection conn = DBUtil.provideConnection()){
+			System.out.println(Style.CYAN+"Enter the Faculty Id :"+Style.RESET);
+			int set = sc.nextInt();
 			
-			System.out.print("Enter the Faculty Id : ");
-			int facultyId = sc.nextInt();
+			PreparedStatement ps = conn.prepareStatement("select * from faculty where facultyId = ?");
 			
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Faculty WHERE facultyId = ?");
-			
-			ps.setInt(1, facultyId);
+			ps.setInt(1, set);
 			
 			ResultSet rs = ps.executeQuery();
 			
-			boolean isAllocated = rs.next();
-			
-			if(isAllocated) {
-				
-				while(isAllocated) {
-					
-					System.out.print("Enter the Batch Id : ");
-					int batchId = sc.nextInt();
+			boolean flag = rs.next();
+			if(flag) {
+				while(flag) {
+					System.out.println(Style.CYAN+"Enter the Batch Id :"+Style.RESET);
+					String batchId = sc.next();
 					
 					BatchDao dao = new BatchDaoImpl();
 					
 					try {
-						String res = dao.allocateFaculty(facultyId, batchId);
-				
+						String res = dao.allocateFaculty(set, batchId);
+						System.out.println();
 						System.out.println(res);
-						isAllocated = false;
+						System.out.println();
+						flag = false;
 						
-					} catch (BatchException e) {	
-						System.out.println( e.getMessage());		
+					} catch (BatchException e) {
+						System.out.println();
+						System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
+						System.out.println();
+						
 					}
 		
 				}
 				
 			}else {
-			
-				System.out.println("Faculty is Not Present \n");
-				
+				System.out.println();
+				System.out.println(Style.RED+"Faculty is Not Present.."+Style.RESET);
+				System.out.println();
 				allocateFaculty();
 			}
 			
 		}catch(Exception ie) {
-			System.out.println("Wrong Input Try Again!");
+			System.out.println();
+			System.out.println(Style.RED+"Wrong Input Try Again!"+Style.RESET);
+			System.out.println();
 			allocateFaculty();
 		}
+		
 	}
+
 }

@@ -6,35 +6,45 @@ import com.learninghub.dao.BatchDao;
 import com.learninghub.dao.BatchDaoImpl;
 import com.learninghub.exceptions.BatchException;
 import com.learninghub.exceptions.InputException;
+import com.learninghub.extrafeatures.Style;
 import com.learninghub.model.Batch;
+
 
 public class SearchBatchById {
 
-	public static void searchBatch() throws InputException{
+	public static void searchBatchById() throws InputException {
 		
-		try (Scanner sc = new Scanner(System.in)) {
+		try {
+			@SuppressWarnings("resource")
+			Scanner sc = new Scanner(System.in);
 			
-			System.out.print(" Enter BatchId : ");
-			int batchId = sc.nextInt();
+			System.out.println(Style.CYAN+"Enter id of Batch"+Style.RESET);
+			String id = sc.next();
 			
-			BatchDao bdo = new BatchDaoImpl();
+			BatchDao dao = new BatchDaoImpl();
 			
 			try {
-				Batch b = bdo.searchBatchById(batchId);
+				Batch b = dao.searchBatchById(id);
 				
-				System.out.printf(" " + b.getBatchId(), b.getCourseId(), b.getFacultyId(), b.getNumberOfStudents(), b.getBatchStartDate(), b.getDuration() + " \n");
-				
-
+				System.out.println();
+				System.out.println(Style.ORANGE+"------------------------------------------------------------------------------------------------");
+		        System.out.printf("%8s %8s %6s %10s %10s %10s %10s", " BATCH ID |", "COURSE ID |", "FACULTY ID |", "FACULTY NAME |", "No. Of Students |", "Starting Date |", "Duration |");
+		        System.out.println();
+		        System.out.println("------------------------------------------------------------------------------------------------");
+				System.out.printf("%5s %8s %11s %15s %14s %20s %15s", b.getBatchId(), b.getCourseId(), b.getFacultyId(), b.getFacultyName(), b.getNoOfStudents(), b.getBatchstartDate(), b.getDuration()+Style.RESET);
+				System.out.println();
+					
 			} catch (BatchException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-
+				System.out.println();
+				System.out.println(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+				System.out.println();
+				
 			}
+		}catch(Exception e) {
+			throw new InputException(Style.RED+"Please Enter Right Input"+Style.RESET);
+			
 		}
-		catch(Exception e) {
-			throw new InputException("Please Enter Valid Input");
-		}
-
+		
 	}
+
 }

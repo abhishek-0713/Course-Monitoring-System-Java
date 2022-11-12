@@ -1,11 +1,7 @@
 package com.learninghub.exceptions;
 
-public class FacultyException extends Exception {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public class FacultyException extends Exception{
 	
 	public FacultyException() {
 		
@@ -14,4 +10,5 @@ public class FacultyException extends Exception {
 	public FacultyException(String message) {
 		super(message);
 	}
+	
 }
