@@ -11,10 +11,9 @@ public class UpdateBatch {
 
 	public static void updateCourse(int batchId) {
 		
-		try {
+		
+		try (Scanner sc = new Scanner(System.in)) {
 			
-			Scanner sc = new Scanner(System.in);
-					
 			boolean updated = true;
 			boolean isUpdated = true;
 			

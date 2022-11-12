@@ -22,6 +22,14 @@ public class Course {
 	}
 
 
+	public Course(String courseName, int courseFee, String courseDescription) {
+		// TODO Auto-generated constructor stub
+		this.courseName = courseName;
+		this.courseFee = courseFee;
+		this.courseDescription = courseDescription;
+	}
+
+
 	public int getCourseId() {
 		return courseId;
 	}
