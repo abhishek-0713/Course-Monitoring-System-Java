@@ -10,14 +10,42 @@ import com.learninghub.utility.DBUtil;
 
 public class AdminDaoImpl implements AdminDao {
 
-	
-	///// ****************         Administrator Registration          ************* /////
-
-	@Override
-	public boolean register(String name, String userName, String password) throws AdminException {
-		// TODO Auto-generated method stub
-		return false;
-	}
+//	
+//	///// ****************         Administrator Registration          ************* /////
+//
+//	@Override
+//	public String registerAdmin(Admin admin) throws AdminException {
+//		
+//		String result = "Not Registered..";
+//		
+//		try(Connection conn= DBUtil.provideConnection()) {
+//			
+//			PreparedStatement ps= conn.prepareStatement("INSERT INTO Admin VALUES(?,?)");
+//			
+//			ps.setString(1, Admin.);
+//			ps.setString(2, student.getAddress());
+//			ps.setString(3, student.getEmail());
+//			ps.setString(4, student.getPassword());
+//			
+//			
+//			int x= ps.executeUpdate();
+//			
+//			if(x >0)
+//				result = "Student Registered Sucessfully..";
+//				
+//			
+//			
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			throw new StudentException(e.getMessage());
+//		}
+//		
+//		
+//
+//		return result;
+//	}
+//
 
 	
 	///// ****************        Administrator Login          ************* /////

@@ -5,11 +5,13 @@ import java.util.Scanner;
 import com.learninghub.dao.AdminDao;
 import com.learninghub.dao.AdminDaoImpl;
 import com.learninghub.exceptions.AdminException;
+import com.learninghub.exceptions.FacultyException;
+import com.learninghub.exceptions.InputException;
 
 public class Admin {
 
 	@SuppressWarnings("resource")
-	public static void login() {
+	public static void login() throws InputException, FacultyException {
 		
 		Scanner sc = new Scanner(System.in);
 		

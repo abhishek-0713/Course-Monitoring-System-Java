@@ -9,9 +9,13 @@ public class Faculty {
 	private String email;
 	private String username;
 	private String password;
+	
+	
 	public Faculty() {
 		super();
 	}
+	
+	
 	public Faculty(int facultyId, String facultyName, String facultyAddress, String mobile, String email,
 			String username) {
 		super();
@@ -22,6 +26,17 @@ public class Faculty {
 		this.email = email;
 		this.username = username;
 	}
+	
+	
+	public Faculty(String facultyName, String facultyAddress, String mobile, String email) {
+		// TODO Auto-generated constructor stub
+		this.facultyName = facultyName;
+		this.facultyAddress = facultyAddress;
+		this.mobile = mobile;
+		this.email = email;
+	}
+
+
 	public int getFacultyId() {
 		return facultyId;
 	}
