@@ -9,6 +9,11 @@
 </br></br></br></br>
 ## Student Management System : Console-Based Individual Project
 
+ <!-- ![image](https://user-images.githubusercontent.com/105943862/200751675-ce7d2c83-e8e3-4fd8-87c8-da9186ede61d.png)
+![image](https://user-images.githubusercontent.com/105943862/200753634-39bc8664-161e-4bac-9da1-b10f8fecf2b5.png) -->
+
+<img src="https://user-images.githubusercontent.com/105943862/200754059-2452beb7-2471-411d-9caa-10f900dcb10b.png" alt="Coder" > 
+
 In an educational  Institute there are several courses running parallel  every day. For every course there are several batches at same/different time. Every course has a session wise/day wise schedule. It will be difficult for the Faculty Head to know the status of every batch i.e what is the session taught at each day in a batch.
 
 So the Automated Course Monitoring System will keep the records of all the courses,batches,faculties and the daywise update for every batch. It will also help the Faculty Head to maintain the course plan .
@@ -18,7 +23,7 @@ So the Automated Course Monitoring System will keep the records of all the cours
 - SQL 
 - JDBC
 
- <!-- ![image](https://user-images.githubusercontent.com/105943862/200751675-ce7d2c83-e8e3-4fd8-87c8-da9186ede61d.png)
-![image](https://user-images.githubusercontent.com/105943862/200753634-39bc8664-161e-4bac-9da1-b10f8fecf2b5.png) -->
 
-<img src="https://user-images.githubusercontent.com/105943862/200754059-2452beb7-2471-411d-9caa-10f900dcb10b.png" alt="Coder" > 
+##
+### Entity Relationship Diagram :
+![image](https://user-images.githubusercontent.com/105943862/201519423-7cc24cf7-6798-41f2-9e94-c74370553948.png)
