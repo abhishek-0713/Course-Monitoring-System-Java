@@ -7,7 +7,7 @@
 </div>
 
 </br></br></br></br>
-## Student Management System : Console-Based Individual Project
+## Course Monitoring System : Console-Based Individual Project
 
  <!-- ![image](https://user-images.githubusercontent.com/105943862/200751675-ce7d2c83-e8e3-4fd8-87c8-da9186ede61d.png)
 ![image](https://user-images.githubusercontent.com/105943862/200753634-39bc8664-161e-4bac-9da1-b10f8fecf2b5.png) -->
