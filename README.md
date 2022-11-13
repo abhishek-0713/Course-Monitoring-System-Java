@@ -27,3 +27,8 @@ So the Automated Course Monitoring System will keep the records of all the cours
 ##
 ### Entity Relationship Diagram :
 ![image](https://user-images.githubusercontent.com/105943862/201519423-7cc24cf7-6798-41f2-9e94-c74370553948.png)
+
+##
+### Project Flow 
+1. Login Flow :
+![image](https://user-images.githubusercontent.com/105943862/201520384-78aaf59a-a63b-4b07-bbeb-b1f88316a4e0.png)
