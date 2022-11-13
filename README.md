@@ -30,5 +30,5 @@ So the Automated Course Monitoring System will keep the records of all the cours
 
 ##
 ### Project Flow 
-1. Login Flow :
+1. Login Process :
 ![image](https://user-images.githubusercontent.com/105943862/201520384-78aaf59a-a63b-4b07-bbeb-b1f88316a4e0.png)
