@@ -40,7 +40,7 @@ public class FacultyLoginOptions {
 
 			}else if(ch== 6) {
 				System.out.println();
-				System.out.println(Style.GREEN_BOLD_BRIGHT+"See You Soon..."+Style.RESET);
+				System.out.println(Style.GREEN_BOLD_BRIGHT+"Come Back Again."+Style.RESET);
 				System.exit(0);
 				
 			}else if(ch == 5) {
@@ -49,7 +49,7 @@ public class FacultyLoginOptions {
 			}
 			else {
 				System.out.println();
-				System.out.println(Style.RED+"Wrong Input Try Again!"+Style.RESET);
+				System.out.println(Style.RED+"Invalid Input Try Again!"+Style.RESET);
 				System.out.println();
 				facultyOption(faculty);
 			}

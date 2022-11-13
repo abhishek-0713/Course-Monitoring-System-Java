@@ -10,16 +10,16 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		System.out.println(Style.DARK_RED_BACKGROUND+" Course Monitoring System"+" "+Style.RESET);
+		System.out.println(Style.ORANGE_BACKGROUND+"\n   Learning Hub - Course Monitoring System   "+" "+Style.RESET);
 		System.out.println();
 
 		Scanner sc = new Scanner(System.in);
 			
 		while(true) {
 				
-			System.out.println(Style.CYAN+"1. Admin Login");
+			System.out.println(Style.RED_BRIGHT+"1. Admin Login");
 			System.out.println("2. Faculty Login");
-			System.out.println("3. Close"+Style.RESET);
+			System.out.println("3. Exit\n"+Style.RESET);
 				
 			String ch = sc.next();
 				
@@ -31,12 +31,12 @@ public class Main {
 				
 			}else if(ch.equals("3")) {
 				System.out.println();
-				System.out.println(Style.GREEN_BOLD_BRIGHT+"See You Soon..."+Style.RESET);
+				System.out.println(Style.GREEN_BOLD_BRIGHT+"Come Back Again."+Style.RESET);
 				break;
 					
 			}else {
 				System.out.println();
-				System.out.println(Style.RED+"Wrong Input Try Again!"+Style.RESET);
+				System.out.println(Style.RED+"Invalid Input Try Again!"+Style.RESET);
 				System.out.println();
 				
 			}

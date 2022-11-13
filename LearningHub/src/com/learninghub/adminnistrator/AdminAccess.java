@@ -18,7 +18,10 @@ public class AdminAccess {
 		Scanner sc = new Scanner(System.in);
 		
 		
+		System.out.println(Style.GREEN_BACKGROUND_BRIGHT+" Welcome to Learning Hub Course Platform \n" );
+
 		while(true) {
+			
 			System.out.println(Style.CYAN+"1. Courses");
 			System.out.println("2. Faculty");
 			System.out.println("3. Batch");
@@ -51,7 +54,7 @@ public class AdminAccess {
 
 			}else if(ch== 8) {
 				System.out.println();
-				System.out.println(Style.GREEN_BOLD_BRIGHT+"See You Soon..."+Style.RESET);
+				System.out.println(Style.GREEN_BOLD_BRIGHT+"Come Back Again."+Style.RESET);
 				System.exit(0);
 				
 			}else if(ch == 7) {

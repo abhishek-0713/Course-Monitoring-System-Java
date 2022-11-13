@@ -16,12 +16,14 @@ public class AdminLogin {
 		int i=4;
 		for(; i>=0; i--) {
 			
-			System.out.println(Style.CYAN+"Enter Username:"+Style.RESET);
+			System.out.print(Style.CYAN+"Enter Username: "+Style.RESET);
 			String uname = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter Password:"+Style.RESET);
+			System.out.print(Style.CYAN+"Enter Password: "+Style.RESET);
 			String pass = sc.next();
 			
+			System.out.println();
+
 			AdminDao dao = new AdminDaoImpl();
 			
 			try {
@@ -38,7 +40,7 @@ public class AdminLogin {
 				System.out.println(Style.YELLOW+i+" Attempts Left.."+Style.RESET);
 				System.out.println();
 				while(true) {
-					System.out.println(Style.CYAN+"Want to try again?(y/n)"+Style.RESET);
+					System.out.print(Style.GREEN+"Want to try again?(y/n) : "+Style.RESET);
 					String choice = sc.next();
 					
 					if(choice.equalsIgnoreCase("y")) {
@@ -54,7 +56,7 @@ public class AdminLogin {
 			}
 		}
 		System.out.println();
-		System.out.println(Style.YELLOW+"Try After 5 minutes.."+Style.RESET);
+		System.out.println(Style.YELLOW+"Try Again After Some Time.."+Style.RESET);
 		System.out.println();
 	}
 	

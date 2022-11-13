@@ -17,10 +17,10 @@ public class FacultyLogin {
 		Scanner sc= new Scanner(System.in);
 		int i=4;
 		for(; i>=0; i--) {
-			System.out.println(Style.CYAN+"Enter Username:"+Style.RESET);
+			System.out.print(Style.CYAN+"Enter Username: "+Style.RESET);
 			String uname = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter Password:"+Style.RESET);
+			System.out.print(Style.CYAN+"Enter Password: "+Style.RESET);
 			String pass = sc.next();
 			
 			FacultyRightsDao dao = new FacultyRightsDaoImpl();
@@ -32,7 +32,7 @@ public class FacultyLogin {
 					
 				}else {				
 					System.out.println();
-					System.out.println(Style.PURPLE_BACKGROUND+" Welcome "+faculty.getFname()+" "+Style.RESET);
+					System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"\n Welcome "+faculty.getFname()+" "+Style.RESET);
 					System.out.println();
 					FacultyLoginOptions.facultyOption(faculty);
 					return;
@@ -62,7 +62,7 @@ public class FacultyLogin {
 						return;
 					}else {
 						System.out.println();
-						System.out.println(Style.RED+"Wrong Input...!"+Style.RESET);
+						System.out.println(Style.RED+"Invalid Input!"+Style.RESET);
 						System.out.println();
 					}
 				}
@@ -70,7 +70,7 @@ public class FacultyLogin {
 			}
 		}
 		System.out.println();
-		System.out.println(Style.YELLOW+"Try After 5 minutes.."+Style.RESET);
+		System.out.println(Style.YELLOW+"Try Again After Some Time.."+Style.RESET);
 		System.out.println();
 	}
 		
