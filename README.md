@@ -22,3 +22,7 @@ So the Automated Course Monitoring System will keep the records of all the cours
 ![image](https://user-images.githubusercontent.com/105943862/200753634-39bc8664-161e-4bac-9da1-b10f8fecf2b5.png) -->
 
 <img src="https://user-images.githubusercontent.com/105943862/200754059-2452beb7-2471-411d-9caa-10f900dcb10b.png" alt="Coder" > 
+
+
+### Entity Relationship Diagram :
+![image](https://user-images.githubusercontent.com/105943862/201519423-7cc24cf7-6798-41f2-9e94-c74370553948.png)
