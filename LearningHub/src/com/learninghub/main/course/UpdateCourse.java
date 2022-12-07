@@ -26,13 +26,21 @@ public class UpdateCourse {
 				
 				while(true) {
 					
-					System.out.println(Style.CYAN+"What do you want to update?");
-					System.out.println("1. Course Name");
-					System.out.println("2. Course Fee");
-					System.out.println("3. Course Description");
-					System.out.println("4. Back");
-					System.out.println("5. Close" +Style.RESET);
+					System.out.println(Style.BLUE_BOLD_BRIGHT+"Update : ");
+
+					System.out.println(Style.TEAL+"+--------------------------------------------------+");
+					System.out.println("|   1    |      Course Name                        |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   2    |      Course Fee                         |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   3    |      Course Description                 |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   4    |      Back To Main                       |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   5    |      Exit                               |");
+					System.out.println("+--------------------------------------------------+\n" + Style.RESET);
 					
+					System.out.print(Style.GREEN+"Enter Your Choise : ");	
 					int ch = sc.nextInt();
 					
 					if(ch == 4) {
@@ -41,8 +49,7 @@ public class UpdateCourse {
 						break;
 						
 					}else if(ch== 5) {
-						System.out.println();
-						System.out.println(Style.BANANA_YELLOW+"See You Soon..."+Style.RESET);
+						System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"\n                   Come Back Again.                   "+Style.RESET);
 						System.exit(0);	
 					}
 					
@@ -57,9 +64,7 @@ public class UpdateCourse {
 						str = "courseDesc";
 						break;
 					}else {
-						System.out.println();
-						System.out.println(Style.RED+"Wrong Input Try Again"+Style.RESET);
-						System.out.println();
+						System.out.println(Style.RED_UNDERLINED+"\n               Invalid Input Try Again!               \n" + Style.RESET);	
 						flag2 = false;
 						break;
 					}
@@ -74,21 +79,16 @@ public class UpdateCourse {
 					String result;
 					try {
 						result = dao.updateCourseDetails(str, set, name);
-						System.out.println();
-						System.out.println(result);
-						System.out.println();
+						System.out.println("\n"+ result + "\n");
 						
 					} catch (CourseException e) {
-						
-						System.out.println();
-						System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
-						System.out.println();
+						System.out.println("\n            "+ Style.RED_BACKGROUND+ e.getMessage()+ "                 \n" + Style.RESET);
 					}
 				}
 				
 				
 				while(flag2) {
-					System.out.println(Style.CYAN+"Want to update anything else?(y/n)"+Style.RESET);
+					System.out.print(Style.GREEN_BOLD_BRIGHT+"Update Again (y/n) : "+Style.RESET);
 					String choice = sc.next();
 					
 					if(choice.equalsIgnoreCase("y")) {
@@ -97,17 +97,13 @@ public class UpdateCourse {
 						flag = false;
 						break;
 					}else {
-						System.out.println();
-						System.out.println(Style.RED+"Wrong Input...!"+Style.RESET);
-						System.out.println();
+						System.out.println(Style.RED_UNDERLINED+"\n               Invalid Input Try Again!               \n");	
 					}
 				}
 			}
 			
 		}catch(InputMismatchException e) {
-			System.out.println();
-			System.out.println(Style.RED+"Wrong Input Try Again!"+Style.RESET);
-			System.out.println();
+			System.out.println("\n               Invalid Input Try Again!               \n" + Style.RESET);	
 			updateCourse(name);
 		}
 

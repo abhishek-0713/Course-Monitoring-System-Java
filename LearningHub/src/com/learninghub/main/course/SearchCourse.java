@@ -17,7 +17,7 @@ public class SearchCourse {
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			
-			System.out.println(Style.CYAN+"Enter Name of Course"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT + "Enter Course Name : "+Style.RESET);
 			String cname = sc.next();
 			
 			
@@ -25,22 +25,23 @@ public class SearchCourse {
 			
 			try {
 				Course c = dao.searchCourse(cname);
-				System.out.println();
-				System.out.println(Style.ORANGE+"Course Id : "+ c.getCourseId());
-				System.out.println("Course Name : " + c.getCourseName());
-				System.out.println("Course Fee : " + c.getCourseFee() + " Rs.");
-				System.out.println("Course Description : " + c.getCourseDesc());
-				System.out.println("------------------------------"+Style.RESET);
-				System.out.println();
+				System.out.println(Style.CYAN_BOLD_BRIGHT+"\n+--------------------------------------------------+");
+				System.out.println("|  Course Id          :    "+ c.getCourseId());
+				System.out.println("+--------------------------------------------------+");
+				System.out.println("|  Course Name        :    " + c.getCourseName());
+				System.out.println("+--------------------------------------------------+");
+				System.out.println("|  Course Fee         :    " + c.getCourseFee() + " Rs.");
+				System.out.println("+--------------------------------------------------+");
+				System.out.println("|  Course Description :    " + c.getCourseDesc());
+				System.out.println("+--------------------------------------------------+\n"+Style.RESET);
+
 				
 			} catch (CourseException e) {
-				System.out.println();
-				System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
-				System.out.println();
+				System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);		
 			}
 		}catch(Exception e) {
-			throw new InputException(Style.RED+"Please Enter Right Input"+Style.RESET);
-			
+			throw new InputException(Style.RED_UNDERLINED+"\n               Invalid Input Try Again!               \n"+Style.RESET);
+
 		}
 		
 	}

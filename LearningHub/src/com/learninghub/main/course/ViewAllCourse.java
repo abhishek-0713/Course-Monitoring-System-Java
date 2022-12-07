@@ -19,20 +19,21 @@ public class ViewAllCourse {
 			
 			courses.forEach( c -> {
 				
-				System.out.println();
-				System.out.println(Style.ORANGE+"Course Id : "+ c.getCourseId());
-				System.out.println("Course Name : " + c.getCourseName());
-				System.out.println("Course Fee : " + c.getCourseFee() + " Rs.");
-				System.out.println("Course Description : " + c.getCourseDesc());
-				System.out.println("------------------------------"+Style.RESET);
-				
+				System.out.println(Style.CYAN_BOLD_BRIGHT+"\n+--------------------------------------------------+");
+				System.out.println("|  Course Id          :    "+ c.getCourseId());
+				System.out.println("+--------------------------------------------------+");
+				System.out.println("|  Course Name        :    " + c.getCourseName());
+				System.out.println("+--------------------------------------------------+");
+				System.out.println("|  Course Fee         :    " + c.getCourseFee() + " Rs.");
+				System.out.println("+--------------------------------------------------+");
+				System.out.println("|  Course Description :    " + c.getCourseDesc());
+				System.out.println("+--------------------------------------------------+\n"+Style.RESET);
+
 			});
-			System.out.println();
+			System.out.println(Style.GREEN_UNDERLINED + "***************************************************************\n"+ Style.RESET);
 			
 		} catch (CourseException e) {
-			System.out.println();
-			System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
-			System.out.println();
+			System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 		}
 		
 	}

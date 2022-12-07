@@ -18,14 +18,14 @@ public class CreateCourse {
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			
-			System.out.println(Style.CYAN+"Enter Name of the Course"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Course Name       : "+Style.RESET);
 			String cname = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter the Course Fee"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Course Fee        : "+Style.RESET);
 			int cfee = sc.nextInt();
 			
 			sc.nextLine();
-			System.out.println(Style.CYAN+"Enter Couse Description"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Couse Description : "+Style.RESET);
 			String cdesc = sc.nextLine();
 			
 			Course course = new Course(cname, cfee, cdesc);
@@ -35,18 +35,14 @@ public class CreateCourse {
 			String res;
 			try {
 				res = dao.addCourse(course);
-				System.out.println();
-				System.out.println(res);
-				System.out.println();
+				System.out.println("\n" + res + "\n");
 				
-			} catch (CourseException ce) {
-				System.out.println();
-				System.out.println(Style.RED_BACKGROUND+ce.getMessage()+Style.RESET);
-				System.out.println();
+			} catch (CourseException e) {
+				System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 			}
 			
 		}catch(Exception e) {
-			throw new InputException(Style.RED+"Please Enter Right Input"+Style.RESET);
+			throw new InputException(Style.RED_UNDERLINED+"Invalid Input"+Style.RESET);
 			
 		}
 		

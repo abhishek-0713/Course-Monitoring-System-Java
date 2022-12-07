@@ -25,8 +25,6 @@ public class SearchCourseByName {
 				return flag;
 				
 			}
-				
-				
 		
 		return flag;
 		

@@ -38,15 +38,15 @@ public class AdminDaoImpl implements AdminDao{
 					flag = true ; 
 				}
 				else 
-					throw new AdminException(Style.RED+"Wrong Password"+Style.RESET);
+					throw new AdminException(Style.RED_UNDERLINED+"                   Wrong Password                     ");
 					
 			}else {
-				throw new AdminException(Style.RED+"No Such Admin Present With this Username"+Style.RESET);
+				throw new AdminException("              Account Username Does Not Exists                 ");
 				
 			}
 			
 		} catch (SQLException e) {		
-			throw new AdminException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			throw new AdminException(e.getMessage()+Style.RESET);
 			
 		}
 		
