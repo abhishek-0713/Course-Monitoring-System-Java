@@ -45,12 +45,11 @@ public class CoursePlanDaoImpl implements CoursePlanDao{
 					c.setTime(sdf.parse(dt));
 					
 				} catch (ParseException e) {				
-					System.out.println((Style.RED_BACKGROUND+e.getMessage()+Style.RESET));
-					
+					System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);					
 				}
-				c.add(Calendar.DATE, dayNo-1);  // number of days to add
+				c.add(Calendar.DATE, dayNo-1);  
 
-				dt = sdf.format(c.getTime());  // dt is now the new date
+				dt = sdf.format(c.getTime());
 			}
 			
 			PreparedStatement ps = conn .prepareStatement("insert into courseplan(batchId, daynumber, planDate) values(?, ?, ?)");
@@ -62,10 +61,10 @@ public class CoursePlanDaoImpl implements CoursePlanDao{
 			int x = ps.executeUpdate();
 			
 			if(x>0) {		
-				message = Style.GREEN+"New Course Plan Added Successfully.."+Style.RESET;	
+				message = Style.GREEN_BOLD_BRIGHT+"New Course Plan Added Successfully"+Style.RESET;	
 			}
 		}catch(SQLException e) {
-			throw new CoursePlanException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			throw new CoursePlanException("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);					
 		}
 		
 		return message;
@@ -76,7 +75,7 @@ public class CoursePlanDaoImpl implements CoursePlanDao{
 	@Override
 	public String updateStatus(String batchId, int dayNo) throws CoursePlanException {
 		
-		String message = Style.RED+"Status Not Updated..."+Style.RESET;
+		String message = Style.RED_BOLD_BRIGHT+"Update Status"+Style.RESET;
 		
 		try(Connection conn = DBUtil.provideConnection()){
 			PreparedStatement ps1 = conn .prepareStatement("select datediff(planDate,curdate()) as date from courseplan where batchId = ? AND daynumber = ?");
@@ -100,12 +99,12 @@ public class CoursePlanDaoImpl implements CoursePlanDao{
 				int x = ps.executeUpdate();
 				
 				if(x>0) {		
-					message = Style.GREEN+"Status Updated Successfully.."+Style.RESET;	
+					message =Style.GREEN_BOLD_BRIGHT+"Status Updated Successfully"+Style.RESET;	
 				}else {
-					throw new CoursePlanException(Style.RED+"Day no "+dayNo+" is not Planned yet.."+Style.RESET);
+					throw new CoursePlanException(Style.RED_UNDERLINED+"Day number "+dayNo+" is not Planned yet"+Style.RESET);
 				}
 			}else {
-				throw new CoursePlanException(Style.RED+"You Can't Change Status For a Future Date"+Style.RESET);
+				throw new CoursePlanException(Style.RED_BOLD_BRIGHT+"Future Date Can Not Status"+Style.RESET);
 			}
 			
 		}catch(Exception e) {

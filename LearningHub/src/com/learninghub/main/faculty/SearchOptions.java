@@ -13,13 +13,20 @@ public class SearchOptions {
 		Scanner sc = new Scanner(System.in);
 		
 		while(true) {
-			
-			System.out.println(Style.CYAN+"1. Search By Faculty Id");
-			System.out.println("2. Search By Name");
-			System.out.println("3. View All Faculty");
-			System.out.println("4. Back" );
-			System.out.println("5. Close"+Style.RESET);
-			
+
+			System.out.println(Style.TEAL+"+--------------------------------------------------+");
+			System.out.println("|   1    |      Search By Faculty Id               |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   2    |      Search Faculty By Name             |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   3    |      View All Faculties                 |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   4    |      Back To Main Menu                  |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   5    |      Exit                               |");
+			System.out.println("+--------------------------------------------------+\n"+Style.RESET);
+
+			System.out.print(Style.GREEN+"Enter Your Choise : ");	
 			int ch = sc.nextInt();
 				
 			if(ch == 1) {
@@ -27,9 +34,7 @@ public class SearchOptions {
 				try {
 					SearchFacultyByInt.searchById();
 				} catch (InputException e) {
-					System.out.println();
-					System.out.println(e.getMessage());
-					System.out.println();
+					System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 				}
 					
 			}else if(ch == 2) {
@@ -45,19 +50,15 @@ public class SearchOptions {
 				break;
 				
 			}else if(ch == 5) {
-				System.out.println();	
-				System.out.println(Style.BANANA_YELLOW+"See You Soon..."+Style.RESET);
+				System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"\n                   Come Back Again.                   "+Style.RESET);
 				System.exit(0);
 				
 			}
 			else {
-				System.out.println();	
-				System.out.println(Style.RED+"Wrong Input Try Again"+Style.RESET);
-				System.out.println();	
+				System.out.println("\n               Invalid Input Try Again!               \n"+Style.RESET);	
 			}
 			System.out.println();	
 		}
-		
 		
 	}
 	

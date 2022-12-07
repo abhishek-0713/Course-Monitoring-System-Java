@@ -17,7 +17,7 @@ import com.learninghub.utility.DBUtil;
 public class FacultyDaoImpl implements FacultyDao {
 
 	
-	// Add New Faculty into Database
+	/* ---------------------------------------------       Create Faculty       ------------------------------------------------------- */
 	@Override
 	public String addFaculty(Faculty faculty) throws FacultyException{
 
@@ -56,20 +56,19 @@ public class FacultyDaoImpl implements FacultyDao {
 			int x = ps1.executeUpdate();
 			
 			if(x>0) {		
-				message = Style.GREEN+"Faculty Added Successfully.."+Style.RESET;	
+				message = Style.GREEN_BOLD_BRIGHT+"Faculty Added Successfully"+Style.RESET;	
 			}
 			
 		}catch(SQLException e) {
 			
-			message = Style.RED_BACKGROUND+e.getMessage()+Style.RESET;
-			
+			message = "\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET;			
 		}
 		
 		return message;
 	}
 
 	
-	// Search Faculty With Name
+	/* ---------------------------------------------       Search Faculty By Name       ------------------------------------------------------- */
 	@Override
 	public List<Faculty> searchFacultyByName(String name) throws FacultyException{
 		
@@ -102,13 +101,11 @@ public class FacultyDaoImpl implements FacultyDao {
 			}
 			
 			if(facultys.size() == 0)
-				throw new FacultyException(Style.RED_BACKGROUND+"Faculty does not exist with this name "+ name + "."+Style.RESET);
+				throw new FacultyException(Style.RED_BOLD_BRIGHT+"Faculty " + name + " does not exist "+Style.RESET);
 			
 			
-		}catch(SQLException e) {
-//			e.printStackTrace();
-			
-			throw new FacultyException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+		}catch(SQLException e) {			
+			throw new FacultyException("\n           " + Style.RED_BACKGROUND + e.getMessage() + "          \n" + Style.RESET);
 		}
 		
 		
@@ -116,7 +113,7 @@ public class FacultyDaoImpl implements FacultyDao {
 	}
 
 	
-	// Search Faculty With id
+	/* ---------------------------------------------       Search Faculty by Id       ------------------------------------------------------- */
 	@Override
 	public Faculty searchFacultyById(int id) throws FacultyException {
 		
@@ -147,19 +144,18 @@ public class FacultyDaoImpl implements FacultyDao {
 				
 			}else
 			
-				throw new FacultyException(Style.RED_BACKGROUND+"Faculty does not exist with this id "+ id + "."+Style.RESET);
+				throw new FacultyException(Style.RED_BACKGROUND+"Faculty "+ id + "Does Not Exists"+Style.RESET);
 			
 		}catch(SQLException e) {
-//			e.printStackTrace();
-			
-			throw new FacultyException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			throw new FacultyException("\n           " + Style.RED_BACKGROUND + e.getMessage() + "          \n" + Style.RESET);
 		}
 		
 		return faculty;
 	}
 	
 	
-	// See All Faculty Details Present in Database
+	/* ---------------------------------------------       View All Faculty Details       ------------------------------------------------------- */
+
 	@Override
 	public List<Faculty> getAllFacultyDetails() throws FacultyException {
 		
@@ -188,13 +184,13 @@ public class FacultyDaoImpl implements FacultyDao {
 			}
 			
 			if(facultys.size() == 0)
-				throw new FacultyException(Style.RED_BACKGROUND+"No Student found.."+Style.RESET);
+				throw new FacultyException(Style.RED_UNDERLINED+"No Student found."+Style.RESET);
 
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
 			
-			throw new FacultyException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			throw new FacultyException("\n           " + Style.RED_BACKGROUND + e.getMessage() + "          \n" + Style.RESET);
 		}
 		
 		
@@ -204,11 +200,11 @@ public class FacultyDaoImpl implements FacultyDao {
 
 
 	
-	// Update details of faculty table
+	/* ---------------------------------------------       Update Faculty Details       ------------------------------------------------------- */
 	@Override
 	public String updateFacultyDetails(String str, String set, int id) throws FacultyException{
 
-		String message = Style.RED+"Data Not Updated..."+Style.RESET;
+		String message = Style.RED_BOLD_BRIGHT+"Data Not Updated."+Style.RESET;
 		
 		try(Connection conn = DBUtil.provideConnection()){
 			
@@ -220,12 +216,12 @@ public class FacultyDaoImpl implements FacultyDao {
 			int x = ps.executeUpdate();
 			
 			if(x>0) {		
-				message = Style.GREEN+"Faculty Details Updated Successfully.."+Style.RESET;	
+				message = Style.GREEN_BOLD_BRIGHT+"Faculty Details Updated Successfully"+Style.RESET;	
 			}
 			
 		}catch(SQLException e) {
 			
-			message = Style.RED_BACKGROUND+e.getMessage()+Style.RESET;
+			message = "\n           " + Style.RED_BACKGROUND + e.getMessage() + "          \n" + Style.RESET;
 			
 		}
 		
@@ -233,12 +229,13 @@ public class FacultyDaoImpl implements FacultyDao {
 	}
 
 
+
+	/* ---------------------------------------------       Delete Faculty Details       ------------------------------------------------------- */
 	
-	// Delete details of faculty table
 	@Override
 	public String deleteFaculty(int facultyId) throws FacultyException {
 		
-		String message = Style.RED+"Faculty Data Not Updated..."+Style.RESET;
+		String message = Style.RED_BOLD_BRIGHT+"Faculty Data Not Updated"+Style.RESET;
 		
 		try(Connection conn = DBUtil.provideConnection()){
 			
@@ -250,16 +247,16 @@ public class FacultyDaoImpl implements FacultyDao {
 			int x = ps.executeUpdate();
 			
 			if(x>0) {		
-				message = Style.GREEN+"Faculty Deleted Successfully.."+Style.RESET;
+				message = Style.RED_BOLD_BRIGHT+"Faculty Deleted Successfully"+Style.RESET;
 				
 			}else {
-				throw new FacultyException(Style.RED+"Faculty Not Exist"+Style.RESET);
+				throw new FacultyException(Style.RED_UNDERLINED+"           Faculty Not Exist             "+Style.RESET);
 				
 			}
 			
 		} catch (SQLException e) {
 
-			throw new FacultyException(Style.RED+"Wrong Data Format"+Style.RESET);
+			throw new FacultyException("\n           " + Style.RED_BACKGROUND + e.getMessage() + "          \n" + Style.RESET);
 		}
 		
 		return message;

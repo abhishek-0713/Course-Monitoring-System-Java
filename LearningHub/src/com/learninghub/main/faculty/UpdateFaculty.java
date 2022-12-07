@@ -27,17 +27,29 @@ public class UpdateFaculty {
 				
 				while(true) {	
 					
-					System.out.println(Style.CYAN+"What do you want to update?");
-					System.out.println("1. First Name");
-					System.out.println("2. Last Name");
-					System.out.println("3. Address");
-					System.out.println("4. State");
-					System.out.println("5. Pin");
-					System.out.println("6. Mobile");
-					System.out.println("7. Email");
-					System.out.println("8. Back");
-					System.out.println("9. Close" +Style.RESET);
+					System.out.println(Style.CYAN_BOLD_BRIGHT+"Update : ");
 					
+					System.out.println(Style.WHITE_BOLD_BRIGHT+"\n+--------------------------------------------------+");
+					System.out.println("|   1    |      First Name                         |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   2    |      Last Name                          |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   3    |      Address                            |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   4    |      State                              |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   5    |      Pin Code                           |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   6    |      Mobile                             |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   7    |      Email                              |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   8    |      Back To Main Menu                  |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   9    |      Exit                               |");
+					System.out.println("+--------------------------------------------------+\n"+Style.RESET);
+
+					System.out.print(Style.GREEN+"Enter Your Choise : ");	
 					int ch = sc.nextInt();
 					
 					if(ch == 8) {
@@ -46,7 +58,7 @@ public class UpdateFaculty {
 						break;
 						
 					}else if(ch== 9) {
-						System.out.println(Style.BANANA_YELLOW+"See You Soon..."+Style.RESET);
+						System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"\n                   Come Back Again.                   "+Style.RESET);
 						System.exit(0);	
 					}
 				
@@ -73,13 +85,13 @@ public class UpdateFaculty {
 						break;
 					}
 					else {
-						System.out.println(Style.RED+"Wrong Input Try Again"+Style.RESET);
+						System.out.println("\n               Invalid Input Try Again!               \n"+Style.RESET);
 					}
 				}
 				
 				if(flag2) {
 					sc.nextLine();
-					System.out.println("Enter New Entry :");
+					System.out.print("Enter New Entry :");
 					String set = sc.nextLine();
 					
 					FacultyDao dao = new FacultyDaoImpl();
@@ -87,21 +99,17 @@ public class UpdateFaculty {
 					String result;
 					try {
 						result = dao.updateFacultyDetails(str, set, id);
-						System.out.println();
-						System.out.println(result);
-						System.out.println();
+						System.out.println("\n" + result + "\n");
 						
 					} catch (FacultyException e) {
-						System.out.println();
-						System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
-						System.out.println();
+						System.out.println("\n           " + Style.RED_BOLD_BRIGHT+e.getMessage() + "          \n" + Style.RESET);
 					}
 					
 				}
 				
 				
 				while(flag2) {
-					System.out.println(Style.CYAN+"Want to update anything else?(y/n)"+Style.RESET);
+					System.out.print(Style.GREEN_BOLD_BRIGHT+"Update More Feilds [y/n] : "+Style.RESET);
 					String choice = sc.next();
 					
 					if(choice.equalsIgnoreCase("y")) {
@@ -110,17 +118,13 @@ public class UpdateFaculty {
 						flag = false;
 						break;
 					}else {
-						System.out.println();
-						System.out.println(Style.RED+"Wrong Input...!"+Style.RESET);
-						System.out.println();
+						System.out.println("\n               Invalid Input Try Again!               \n"+Style.RESET);
 					}
 				}
 			}
 			
 		}catch(InputMismatchException e) {
-			System.out.println();
-			System.out.println(Style.RED+"Wrong Input Try Again!"+Style.RESET);
-			System.out.println();
+			System.out.println("\n               Invalid Input Try Again!               \n"+Style.RESET);
 			UpdateById(id);
 		}
 

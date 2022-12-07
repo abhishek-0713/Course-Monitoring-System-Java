@@ -16,27 +16,22 @@ public static void deleteFaculty() throws InputException {
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			
-			System.out.println(Style.CYAN+"Enter id of Faculty"+Style.RESET);
+			System.out.print(Style.GREEN_BOLD_BRIGHT+"Enter id of Faculty  : "+Style.RESET);
 			int id = sc.nextInt();
 			
 			FacultyDao dao = new FacultyDaoImpl();
 			
 			try {
 				String res = dao.deleteFaculty(id);
-				System.out.println();
-				System.out.println(res);
-				System.out.println();
+				System.out.println("\n" + res + "\n");
 				
 			} catch (FacultyException e) {
-				System.out.println();
-				System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
-				System.out.println();
-				
+				System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 			}
 			
-		}catch(Exception e) {
-			throw new InputException(Style.RED+"Please Enter Right Input"+Style.RESET);
-			
+		} 
+		catch(Exception e) {
+			throw new InputException(Style.RED_UNDERLINED+"               Invalid Input               "+Style.RESET);						
 		}
 	}
 	

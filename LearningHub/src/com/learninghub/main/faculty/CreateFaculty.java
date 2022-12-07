@@ -18,26 +18,26 @@ public class CreateFaculty {
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			
-			System.out.println(Style.CYAN+"Enter First Name of Faculty"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter First Name of Faculty  : "+Style.RESET);
 			String fname = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter Last Name of Faculty"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Last Name of Faculty   : "+Style.RESET);
 			String lname = sc.next();
 			
 			sc.nextLine();
-			System.out.println(Style.CYAN+"Enter Faculty Address"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Faculty Address        : "+Style.RESET);
 			String address = sc.nextLine();
 			
-			System.out.println(Style.CYAN+"Enter Faculty State(Short Form)"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Faculty State          : "+Style.RESET);
 			String state = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter Faculty Pincode"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Faculty Pincode        : "+Style.RESET);
 			String pin = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter Faculty Mobile No."+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Faculty Mobile         : "+Style.RESET);
 			String mobile = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter Faculty Email"+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Faculty Email          : "+Style.RESET);
 			String email = sc.next();
 			
 			
@@ -48,19 +48,14 @@ public class CreateFaculty {
 			String result;
 			try {
 				result = dao.addFaculty(faculty);
-				System.out.println();
-				System.out.println(result);
-				System.out.println();
+				System.out.println("\n" + result + "\n");
 				
 			} catch (FacultyException e) {
-				System.out.println();
-				System.out.println(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
-				System.out.println();
+				System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "           \n" + Style.RESET);
 			}
 		
 		}catch(Exception e) {
-			throw new InputException(Style.RED+"Please Enter Right Input"+Style.RESET);
-			
+			throw new InputException(Style.RED_UNDERLINED+"               Invalid Input               "+Style.RESET);			
 		}
 		
 	}

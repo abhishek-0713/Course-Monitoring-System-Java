@@ -17,13 +17,22 @@ public class FacultyLoginOptions {
 		
 		
 		while(true) {
-			System.out.println(Style.CYAN+"1. Fill Day Planner");
-			System.out.println("2. Update Status Day Planner");
-			System.out.println("3. View Course Plan");
-			System.out.println("4. Settings");
-			System.out.println("5. Log Out");
-			System.out.println("6. Close the App"+Style.RESET);
 			
+			System.out.println(Style.TEAL+"+--------------------------------------------------+");
+			System.out.println("|   1    |      Day Planner -Fill Details          |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   2    |      Update Status                      |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   3    |      View Course Plan                   |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   4    |      Update Settings                    |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   5    |      Log Out                            |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   6    |      Exit                               |");
+			System.out.println("+--------------------------------------------------+\n"+Style.RESET);
+
+			System.out.print(Style.GREEN+"Enter Your Choise : ");	
 			int ch = sc.nextInt();
 			
 			if(ch == 1) {
@@ -39,8 +48,7 @@ public class FacultyLoginOptions {
 				FacultySettings.facultySettings(faculty);
 
 			}else if(ch== 6) {
-				System.out.println();
-				System.out.println(Style.GREEN_BOLD_BRIGHT+"Come Back Again."+Style.RESET);
+				System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"\n                   Come Back Again.                   "+Style.RESET);
 				System.exit(0);
 				
 			}else if(ch == 5) {
@@ -48,9 +56,7 @@ public class FacultyLoginOptions {
 				
 			}
 			else {
-				System.out.println();
-				System.out.println(Style.RED+"Invalid Input Try Again!"+Style.RESET);
-				System.out.println();
+				System.out.println("\n               Invalid Input Try Again!               \n"+Style.RESET);	
 				facultyOption(faculty);
 			}
 			

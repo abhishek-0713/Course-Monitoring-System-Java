@@ -48,16 +48,17 @@ public class FacultyRightsDaoImpl implements FacultyRightsDao{
 					faculty = new Faculty(fid,fname,lname,address,state,pin,mobile,email,uname);
 				}else
 					
-					throw new FacultyRightsException(Style.RED+"Wrong Password"+Style.RESET);
+					throw new FacultyRightsException(Style.RED_UNDERLINED+"Invalid Password"+Style.RESET);
 				
 			}else
 			
-				throw new FacultyRightsException(Style.RED+"No Such Faculty Present With this Username"+Style.RESET);
+				throw new FacultyRightsException(Style.RED_UNDERLINED+"UserName Not Exists"+Style.RESET);
 			
 			
 		} catch (SQLException e) {
 			
-			throw new FacultyRightsException(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
+			throw new FacultyRightsException("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
+
 		}
 		
 		return faculty;
@@ -70,7 +71,7 @@ public class FacultyRightsDaoImpl implements FacultyRightsDao{
 	@Override
 	public String forgetPassword(String mobile, String email, String pass) throws FacultyRightsException {
 		
-		String message = Style.RED+"Sorry Not Able To Change Password"+Style.RESET;
+		String message = Style.RED_BOLD_BRIGHT+"Unable to Change Password"+Style.RESET;
 		
 		try(Connection conn = DBUtil.provideConnection()){
 			
@@ -83,12 +84,12 @@ public class FacultyRightsDaoImpl implements FacultyRightsDao{
 			int x = ps.executeUpdate();
 			
 			if(x>0) {		
-				message = Style.GREEN+"Your Password Updated Successfully.."+Style.RESET;	
+				message = Style.GREEN_BOLD_BRIGHT+"Your Password Updated Successfully"+Style.RESET;	
 			}
 			
 		}catch(SQLException e) {
 			
-			message = Style.RED_BACKGROUND+e.getMessage()+Style.RESET;
+			message = "\n           " + Style.RED_BACKGROUND + e.getMessage() + "          \n" + Style.RESET;
 			
 		}
 		
@@ -102,7 +103,7 @@ public class FacultyRightsDaoImpl implements FacultyRightsDao{
 	@Override
 	public String changePassword(int faculty, String pass) throws FacultyRightsException {
 		
-		String message = Style.RED+"Password Not Updated..."+Style.RESET;
+		String message = Style.RED_BOLD_BRIGHT+"Password Not Updated"+Style.RESET;
 		
 		try(Connection conn = DBUtil.provideConnection()){
 			
@@ -114,12 +115,12 @@ public class FacultyRightsDaoImpl implements FacultyRightsDao{
 			int x = ps.executeUpdate();
 			
 			if(x>0) {		
-				message = Style.GREEN+"Your Password Updated Successfully.."+Style.RESET;	
+				message = Style.GREEN_BOLD_BRIGHT+"Password Updated Successfully"+Style.RESET;	
 			}
 			
 		}catch(SQLException e) {
 			
-			message = Style.RED_BACKGROUND+e.getMessage()+Style.RESET;
+			message = "\n           " + Style.RED_BACKGROUND + e.getMessage() + "          \n" + Style.RESET;
 			
 		}
 		

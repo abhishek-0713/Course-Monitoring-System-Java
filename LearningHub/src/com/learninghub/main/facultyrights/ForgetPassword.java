@@ -21,10 +21,10 @@ public class ForgetPassword {
 		
 		try(Connection conn = DBUtil.provideConnection()){
 			
-			System.out.println(Style.CYAN+"Enter Mobile No. : "+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Mobile    : "+Style.RESET);
 			String mobile = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter Email No. : "+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Email     : "+Style.RESET);
 			String email = sc.next();
 			
 			
@@ -39,11 +39,11 @@ public class ForgetPassword {
 				
 				FacultyRightsDao dao = new FacultyRightsDaoImpl();
 					
-				System.out.println(Style.CYAN+"Enter New Password: "+Style.RESET);
+				System.out.print(Style.RED_BOLD_BRIGHT+"Enter New Password    : "+Style.RESET);
 				String newPass = sc.next();
 				
 				
-				System.out.println(Style.CYAN+"Enter New Password Again : "+Style.RESET);
+				System.out.print(Style.RED_BOLD_BRIGHT+"Enter New Password Again   : "+Style.RESET);
 				String newPass2 = sc.next();
 				
 
@@ -52,37 +52,27 @@ public class ForgetPassword {
 					
 					try {
 						String res = dao.forgetPassword(mobile, email, newPass2);
-						System.out.println();
-						System.out.println(res);
-						System.out.println();
+						System.out.println("\n" + res + "\n");
 						
 					} catch (FacultyRightsException e) {
-						System.out.println();
-						System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
-						System.out.println();
+						System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 						return false;
 					}
 					
 				}else {
-					System.out.println();
-					System.out.println(Style.RED+"New Password Mismatch.."+Style.RESET);
-					System.out.println();
+					System.out.println(Style.RED_BOLD_BRIGHT+" Check Both Passwords & Try Again"+Style.RESET);
 					return false;
 				}
 				
 				
 			}else {
-				System.out.println();
-				System.out.println(Style.RED+"Mobile Number or Email Not Found.."+Style.RESET);
-				System.out.println();
+				System.out.println(Style.RED_BOLD_BRIGHT+"\n           Mobile Number / Email Not Found             \n"+Style.RESET);
 				return false;
 				
 			}
 			
 		} catch (SQLException e) {
-			System.out.println();
-			System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
-			System.out.println();
+			System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 			return false;
 			
 		}

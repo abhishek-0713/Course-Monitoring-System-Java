@@ -14,14 +14,21 @@ public class FacultyOptions {
 		
 		while(true) {
 			
-			System.out.println(Style.CYAN+"1. Add Faculty");
-			System.out.println("2. Update Faculty");
-			System.out.println("3. Search Faculty");
-			System.out.println("4. Delete Faculty");
-			System.out.println("5. Back");
-			System.out.println("6. Close"+Style.RESET);
-			
-			
+			System.out.println(Style.TEAL+"+--------------------------------------------------+");
+			System.out.println("|   1    |      Add Faculty                        |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   2    |      Update Faculty                     |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   3    |      Search Faculty                     |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   4    |      Delete Faculty                     |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   5    |      Back To Main Menu                  |");
+			System.out.println("+--------------------------------------------------+");
+			System.out.println("|   6    |      Exit                               |");
+			System.out.println("+--------------------------------------------------+\n"+Style.RESET);
+
+			System.out.print(Style.GREEN+"Enter Your Choise : ");	
 			int ch = sc.nextInt();
 		
 			if(ch == 1) {
@@ -29,10 +36,7 @@ public class FacultyOptions {
 					CreateFaculty.addFacultyMtd();
 					
 				} catch (InputException e) {
-					System.out.println();
-					System.out.println(e.getMessage());
-					System.out.println();
-					
+					System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 				}
 				
 			}else if(ch == 2) {
@@ -45,24 +49,19 @@ public class FacultyOptions {
 				try {
 					DeleteFaculty.deleteFaculty();
 				} catch (InputException e) {
-					System.out.println();
-					System.out.println(e.getMessage());
-					System.out.println();
+					System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 				}
 				
 			}else if(ch== 6) {
-				System.out.println();
-				System.out.println(Style.BANANA_YELLOW+"See You Soon..."+Style.RESET);
+				System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"\n                   Come Back Again.                   "+Style.RESET);
 				System.exit(0);
 				
 			}else if(ch == 5) {
 				break;
 				
-			}else {
-				System.out.println();
-				System.out.println(Style.RED+"Wrong Input Try Again"+Style.RESET);
-				System.out.println();
-				
+			}
+			else {
+				System.out.println(Style.RED_UNDERLINED+"\n               Invalid Input Try Again!               \n");		
 			}
 		}
 		

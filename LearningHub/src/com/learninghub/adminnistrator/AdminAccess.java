@@ -61,8 +61,7 @@ public class AdminAccess {
 				GenerateReport.viewAllBatch();
 
 			}else if(ch== 8) {
-				System.out.println();
-				System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"                   Come Back Again                    "+Style.RESET);
+				System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"\n                   Come Back Again                    "+Style.RESET);
 				System.exit(0);
 				
 			}else if(ch == 7) {
@@ -70,9 +69,7 @@ public class AdminAccess {
 				
 			}
 			else {
-				System.out.println();
-				System.out.println(Style.RED_UNDERLINED+"                Wrong Input Try Again!                "+Style.RESET);
-				System.out.println();
+				System.out.println(Style.RED_UNDERLINED+"\n                Wrong Input Try Again!                \n"+Style.RESET);
 				adminOption();
 			}
 			

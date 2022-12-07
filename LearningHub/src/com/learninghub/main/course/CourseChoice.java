@@ -17,7 +17,7 @@ public class CourseChoice {
 			Scanner sc = new Scanner(System.in);
 			
 			while(true) {
-				System.out.println(Style.TEAL+"+--------------------------------------------------+");
+				System.out.println(Style.TEAL+"\n+--------------------------------------------------+");
 				System.out.println("|   1    |      Add Course                         |");
 				System.out.println("+--------------------------------------------------+");
 				System.out.println("|   2    |      Update Course                      |");
@@ -39,10 +39,7 @@ public class CourseChoice {
 						CreateCourse.addCourceMtd();
 						
 					} catch (InputException e) {
-						System.out.println();
-						System.out.println(e.getMessage());
-						System.out.println();
-						
+						System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 					}
 					
 				}else if(ch == 2) {
@@ -67,9 +64,7 @@ public class CourseChoice {
 					try {
 						DeleteCourse.deleteCourse();
 					} catch (InputException e) {
-						System.out.println();
-						System.out.println(e.getMessage());
-						System.out.println();
+						System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 					}
 					
 				}else if(ch == 5) {

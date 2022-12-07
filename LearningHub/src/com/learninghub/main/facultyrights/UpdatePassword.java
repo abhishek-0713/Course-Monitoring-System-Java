@@ -21,13 +21,13 @@ public class UpdatePassword {
 		
 		try(Connection conn = DBUtil.provideConnection()){
 			
-			System.out.println(Style.CYAN+"Enter Old Password : "+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter Old Password     : "+Style.RESET);
 			String oldPass = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter New Password: "+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter New Password     : "+Style.RESET);
 			String newPass = sc.next();
 			
-			System.out.println(Style.CYAN+"Enter New Password : "+Style.RESET);
+			System.out.print(Style.BLUE_BOLD_BRIGHT+"Enter New Password     : "+Style.RESET);
 			String newPass2 = sc.next();
 			
 			
@@ -45,33 +45,22 @@ public class UpdatePassword {
 					
 					try {
 						String res = dao.changePassword(facultyId, newPass2);
-						System.out.println();
-						System.out.println(res);
-						System.out.println();
-					} catch (FacultyRightsException e) {
-						
-						System.out.println();
-						System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
-						System.out.println();
+						System.out.println("\n" + res + "\n");
+					} 
+					catch (FacultyRightsException e) {
+						System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 					}
 					
 				}else {
-					System.out.println();
-					System.out.println(Style.RED+"New Password Mismatch.."+Style.RESET);
-					System.out.println();
+					System.out.println(Style.RED_BOLD_BRIGHT+" Check Both Passwords & Try Again"+Style.RESET);
 				}
 				
 			}else {
-				System.out.println();
-				System.out.println(Style.RED+"Wrong Old Password.."+Style.RESET);
-				System.out.println();
-				
+				System.out.println(Style.BLACK_BOLD_BRIGHT+"         Check Old Password & Try Again          "+Style.RESET);				
 			}
 			
 		} catch (SQLException e) {
-			System.out.println();
-			System.out.println(Style.RED_BACKGROUND+ e.getMessage()+Style.RESET);
-			System.out.println();
+			System.out.println("\n           " + Style.RED_BACKGROUND+e.getMessage() + "          \n" + Style.RESET);
 		}
 		
 	}

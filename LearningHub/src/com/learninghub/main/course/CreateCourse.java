@@ -42,8 +42,7 @@ public class CreateCourse {
 			}
 			
 		}catch(Exception e) {
-			throw new InputException(Style.RED_UNDERLINED+"Invalid Input"+Style.RESET);
-			
+			throw new InputException(Style.RED_UNDERLINED+"               Invalid Input               "+Style.RESET);						
 		}
 		
 		

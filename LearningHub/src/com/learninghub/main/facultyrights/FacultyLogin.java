@@ -15,41 +15,42 @@ public class FacultyLogin {
 		
 		@SuppressWarnings("resource")
 		Scanner sc= new Scanner(System.in);
-		int i=4;
+		int i=2;
 		for(; i>=0; i--) {
-			System.out.print(Style.CYAN+"Enter Username: "+Style.RESET);
+			System.out.print(Style.TEAL+"Enter Username: "+Style.RESET);
 			String uname = sc.next();
 			
-			System.out.print(Style.CYAN+"Enter Password: "+Style.RESET);
+			System.out.print(Style.TEAL+"Enter Password: "+Style.RESET);
 			String pass = sc.next();
 			
 			FacultyRightsDao dao = new FacultyRightsDaoImpl();
 			
 			try {
 				faculty = dao.loginFaculty(uname, pass);
-//				System.out.println(faculty);
 				if(faculty == null) {
 					
 				}else {				
-					System.out.println();
-					System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"\n Welcome "+faculty.getFname()+" "+Style.RESET);
-					System.out.println();
+					System.out.println(Style.GREEN_BACKGROUND_BRIGHT+"\n                  Welcome  "+faculty.getFname()+"                     \n"+Style.RESET);
 					FacultyLoginOptions.facultyOption(faculty);
 					return;
 				}
 		 	
 			}catch (FacultyRightsException e) {
-				System.out.println();
-				System.out.println(Style.RED_BACKGROUND+e.getMessage()+Style.RESET);
-				System.out.println();
-				System.out.println(Style.YELLOW+i+" Attempts Left.."+Style.RESET);
-				System.out.println();
+				System.out.println("\n           " + Style.RED_UNDERLINED+e.getMessage() + "          \n" + Style.RESET);
+				System.out.println(Style.YELLOW_BOLD_BRIGHT+i+" Attempts Left \n"+Style.RESET);
 				while(true) {
-					System.out.println(Style.CYAN+"1. Forget Password");
-					System.out.println("2. Want to try again?");
-					System.out.println("3. Exit"+Style.RESET);
 					
+					System.out.println(Style.CYAN_BOLD_BRIGHT+"\n+--------------------------------------------------+");
+					System.out.println("|   1    |      Forget My Password                 |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   2    |      Try Again                          |");
+					System.out.println("+--------------------------------------------------+");
+					System.out.println("|   3    |      Exit                               |");
+					System.out.println("+--------------------------------------------------+\n"+Style.RESET);
+
+					System.out.print(Style.GREEN_BOLD_BRIGHT+"Enter Your Choise : ");
 					String ch = sc.next();
+					
 					if(ch.equals("1")) {	
 						boolean check = ForgetPassword.forgetPass();
 						if(check)
@@ -61,17 +62,14 @@ public class FacultyLogin {
 					}else if(ch.equals("3")) {	
 						return;
 					}else {
-						System.out.println();
-						System.out.println(Style.RED+"Invalid Input!"+Style.RESET);
-						System.out.println();
+						System.out.println(Style.RED_UNDERLINED+"\n               Invalid Input Try Again!               \n");	
+
 					}
 				}
 				
 			}
 		}
-		System.out.println();
-		System.out.println(Style.YELLOW+"Try Again After Some Time.."+Style.RESET);
-		System.out.println();
+		System.out.println(Style.RED_UNDERLINED+"\n                 Try Again!               \n");	
 	}
 		
 }
