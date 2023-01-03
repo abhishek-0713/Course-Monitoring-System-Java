@@ -1,8 +1,10 @@
+<!-- smiling-fold-7496 -->
+
 <div>
 
 <img width=45% title="Coder Abhi." alt="CoderAbhi.0713" align = left src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=150&section=header&text=Learning-Hub&fontSize=40&fontColor=fff&animation=twinkling&fontAlignY=32"/>
 
-<img width=45% title="Coder Abhi." alt="CoderAbhi.0713" align = right src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=150&section=header&text=smiling-fold-7496&fontSize=40&fontColor=fff&animation=twinkling&fontAlignY=32"/>
+<img width=45% title="Coder Abhi." alt="CoderAbhi.0713" align = right src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=150&section=header&text=Course-Monitoring-System&fontSize=40&fontColor=fff&animation=twinkling&fontAlignY=32"/>
 
 </div>
 
